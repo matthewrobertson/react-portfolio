@@ -1,8 +1,8 @@
 import { 
     ActionType, 
-    ADD_HOLDING,
     IAddHoldingAction, 
 } from '../actions';
+import { ADD_HOLDING } from '../constants/actions'
 
 export default function addStockReducer(
     state: string[] = [],

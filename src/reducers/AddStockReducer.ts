@@ -1,11 +1,11 @@
 import { 
     ActionType, 
-    ADD_STOCK, 
-    ADD_STOCK_CHANGE,
-    addHolding,
     IAddStockChangeAction,
 } from '../actions';
-import store from '../store';
+import {
+    ADD_HOLDING, 
+    ADD_STOCK_CHANGE,
+} from '../constants/actions';
 
 export interface IAddStockState {
     ticker: string,
@@ -27,11 +27,7 @@ export default function addStockReducer(
                 isValid: true,
                 ticker: (action as IAddStockChangeAction).ticker,
             };
-        case ADD_STOCK:
-            // TODO: fetch the stock info from the API
-            setTimeout(() => {
-                store.dispatch(addHolding(state.ticker));
-            }, 100);
+        case ADD_HOLDING:
             return defaultState;
     }
     return state;

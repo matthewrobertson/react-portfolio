@@ -1,6 +1,7 @@
 import { connect, Dispatch } from 'react-redux';
 import * as actions from '../actions';
 import AddStockForm from '../components/AddStockForm';
+import fetchStockQuote from '../fetchers/StockFetcher';
 import { IStoreState } from '../store';
 
 export function mapStateToProps(state: IStoreState) {
@@ -11,7 +12,7 @@ export function mapStateToProps(state: IStoreState) {
 
 export function mapDispatchToProps(dispatch: Dispatch<actions.ActionType>) {
   return {
-    onAddStock: () => dispatch(actions.addStock()),
+    onAddStock: (ticker: string) => fetchStockQuote(dispatch, ticker),
     onUpdateTicker: (ticker: string) => dispatch(actions.addStockChange(ticker)),
   }
 }

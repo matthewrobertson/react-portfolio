@@ -1,23 +1,31 @@
-/**
- * ADD_STOCK
- */
-export const ADD_STOCK: string = 'ADD_STOCK';
-export type ADD_STOCK = typeof ADD_STOCK;
+import { 
+    ADD_HOLDING,
+    ADD_STOCK,
+    ADD_STOCK_CHANGE,
+    FETCH_STOCK_QUOTE_ERROR,
+    FETCH_STOCK_QUOTE_START,
+    FETCH_STOCK_QUOTE_SUCCESS,
+} from './constants/actions'
+import { IStockQuote } from './constants/types'
 
+/**
+ *  TODO this is unused
+ */
 export interface IAddStockAction {
     type: ADD_STOCK,
+    ticker: string,
 };
 
-export function addStock(): IAddStockAction {
-    return { type: ADD_STOCK };
+export function addStock(ticker: string): IAddStockAction {
+    return { 
+        ticker,
+        type: ADD_STOCK,
+     };
 };
 
 /**
  * ADD_STOCK_CHANGE
  */
-export const ADD_STOCK_CHANGE: string = 'ADD_STOCK_CHANGE';
-export type ADD_STOCK_CHANGE = typeof ADD_STOCK_CHANGE;
-
 export interface IAddStockChangeAction {
     type: ADD_STOCK_CHANGE,
     ticker: string,
@@ -33,9 +41,6 @@ export function addStockChange(ticker: string): IAddStockChangeAction {
 /**
  * ADD_HOLDING
  */
-export const ADD_HOLDING: string = 'ADD_HOLDING';
-export type ADD_HOLDING = typeof ADD_HOLDING;
-
 export interface IAddHoldingAction {
     type: ADD_HOLDING,
     ticker: string,
@@ -48,4 +53,53 @@ export function addHolding(ticker: string): IAddHoldingAction {
     };
 };
 
-export type ActionType = IAddStockAction | IAddStockChangeAction | IAddHoldingAction;
+/**
+ * FETCH_STOCK_***
+ */
+export interface IFetchStockQuoteStart {
+    type: FETCH_STOCK_QUOTE_START,
+    ticker: string,
+};
+
+export function fetchStockQuoteStart(ticker: string): IFetchStockQuoteStart {
+    return {
+        ticker,
+        type: FETCH_STOCK_QUOTE_START,
+    };
+}
+
+export interface IFetchStockQuoteSuccess {
+    type: FETCH_STOCK_QUOTE_SUCCESS,
+    ticker: string,
+    quote: IStockQuote,
+};
+
+export function fetchStockQuoteSuccess(ticker: string, quote: IStockQuote): IFetchStockQuoteSuccess {
+    return {
+        quote,
+        ticker,
+        type: FETCH_STOCK_QUOTE_SUCCESS,
+    };
+}
+
+export interface IFetchStockQuoteError {
+    error: string,
+    type: FETCH_STOCK_QUOTE_ERROR,
+    ticker: string,
+};
+
+export function fetchStockQuoteError(ticker: string, error: string): IFetchStockQuoteError {
+    return {
+        error,
+        ticker,
+        type: FETCH_STOCK_QUOTE_ERROR,
+    };
+}
+
+export type ActionType = 
+    IAddStockAction | 
+    IAddStockChangeAction | 
+    IAddHoldingAction | 
+    IFetchStockQuoteError | 
+    IFetchStockQuoteSuccess | 
+    IFetchStockQuoteStart;

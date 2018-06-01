@@ -2,15 +2,15 @@ import * as React from 'react';
 
 interface IAddStockFormProps {
     ticker: string,
-    onAddStock: any,
-    onUpdateTicker: any,
+    onAddStock: (ticker: string) => any,
+    onUpdateTicker: (ticker: string) => any,
 };
 
 const AddStockForm: React.StatelessComponent<IAddStockFormProps> = (props: IAddStockFormProps) => {
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => props.onUpdateTicker(e.target.value);
     const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        props.onAddStock();
+        props.onAddStock(props.ticker);
     };
     return (
       <form>
