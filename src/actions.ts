@@ -1,30 +1,15 @@
 import { 
     ADD_HOLDING,
-    ADD_STOCK,
     ADD_STOCK_CHANGE,
+    FETCH_EXCHANGE_RATE_ERROR,
+    FETCH_EXCHANGE_RATE_START,
+    FETCH_EXCHANGE_RATE_SUCCESS,
     FETCH_STOCK_QUOTE_ERROR,
     FETCH_STOCK_QUOTE_START,
     FETCH_STOCK_QUOTE_SUCCESS,
     UPDATE_SHARE_COUNT,
 } from './constants/actions'
 import { IStockQuote } from './constants/types'
-
-/**
- *  TODO this is unused
- */
-export interface IAddStockAction {
-    type: ADD_STOCK,
-    ticker: string,
-    value: number,
-};
-
-export function addStock(ticker: string, value: number): IAddStockAction {
-    return { 
-        ticker,
-        type: ADD_STOCK,
-        value,
-     };
-};
 
 /**
  * ADD_STOCK_CHANGE
@@ -118,11 +103,52 @@ export function updateShareCount(ticker: string, count: number): IUpdateShareCou
     };
 }
 
+/**
+ * Fetch exchange rate
+ */
+
+
+export interface IFetchExchangeRateStart {
+    type: string,
+}
+
+export function fetchExchangeRateStart(): IFetchExchangeRateStart {
+    return {
+        type: FETCH_EXCHANGE_RATE_START,
+    };
+}
+
+export interface IFetchExchangeRateSuccess {
+    type: FETCH_EXCHANGE_RATE_SUCCESS,
+    rate: number,
+}
+
+export function fetchExchangeRateSuccess(rate: number): IFetchExchangeRateSuccess {
+    return {
+        rate,
+        type: FETCH_EXCHANGE_RATE_SUCCESS,
+    };
+}
+
+export interface IFetchExchangeRateError {
+    type: FETCH_EXCHANGE_RATE_SUCCESS,
+    rate: number,
+}
+
+export function fetchExchangeRateError(rate: number): IFetchExchangeRateError {
+    return {
+        rate,
+        type: FETCH_EXCHANGE_RATE_ERROR,
+    };
+}
+
 export type ActionType = 
-    IAddStockAction | 
     IAddStockChangeAction | 
     IAddHoldingAction | 
     IFetchStockQuoteError | 
     IFetchStockQuoteSuccess | 
     IFetchStockQuoteStart |
-    IUpdateShareCount;
+    IUpdateShareCount |
+    IFetchExchangeRateError |
+    IFetchExchangeRateSuccess |
+    IFetchExchangeRateStart;

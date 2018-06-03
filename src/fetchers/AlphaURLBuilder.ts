@@ -1,22 +1,36 @@
 const API_KEY: string = 'YSNPPW3VRX4K0TP4';
 
 class AlphaURLBuilder {
-    private ticker: string;
+
+    public static getCurrencyExchange(currency: string = 'CDN'): string {
+        return (new AlphaURLBuilder()).getBaseURL('CURRENCY_EXCHANGE_RATE', {
+            from_currency: 'USD',
+            to_currency: currency,
+        });
+    }
+
+    public static getStockQuoteURL(ticker: string): string {
+        return (new AlphaURLBuilder()).getBaseURL('TIME_SERIES_INTRADAY', {
+            interval: '1min',
+            symbol: ticker,
+        });
+    }
 
     constructor(
         private domain: string = 'www.alphavantage.co',
         private apiKey: string = API_KEY,
-        private method: string = 'TIME_SERIES_INTRADAY',
     ) {}
 
-    public setTicker(ticker: string): AlphaURLBuilder {
-        this.ticker = ticker;
-        return this;
-    }
-
-    public toString(): string {
-        return `https://${this.domain}/query?interval=1min&apikey=${this.apiKey}&function=${this.method}&symbol=${this.ticker}`;
+    public getBaseURL(method: string, params: {[k: string]: string}): string {
+        const paramString = [];
+        for (const key of Object.keys(params)) {
+            paramString.push(`${key}=${params[key]}`)
+        }
+        return `https://${this.domain}/query?apikey=${this.apiKey}&function=${method}&${paramString.join('&')}`;
     }
 }
+
+
+// https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=BTC&to_currency=CNY&apikey=demo
 
 export default AlphaURLBuilder;

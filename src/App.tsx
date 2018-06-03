@@ -3,11 +3,17 @@ import { Provider } from 'react-redux';
 import './App.css';
 import AddStockForm from './containers/AddStockContainer';
 import Holdings from './containers/HoldingsContainer';
+import { fetchExchangeRate } from './fetchers/StockFetcher';
 import store from './store';
 
 import logo from './logo.svg';
 
 class App extends React.Component {
+
+  public componentDidMount() {
+    fetchExchangeRate(store.dispatch.bind(store));
+  }
+
   public render() {
     return (
       <Provider store={store}>

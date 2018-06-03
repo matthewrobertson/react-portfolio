@@ -4,9 +4,7 @@ import { parseInteger } from '../utils/Utils';
 import AlphaURLBuilder from './AlphaURLBuilder';
 
 export default function fetchStockQuote(dispatch: Dispatch<actions.ActionType>, ticker: string): void {
-    const url = (new AlphaURLBuilder())
-        .setTicker(ticker)
-        .toString();
+    const url = AlphaURLBuilder.getStockQuoteURL(ticker);
     fetch(url)
         .then(r => r.json())
         .then((apiResp) => {
@@ -26,3 +24,18 @@ export default function fetchStockQuote(dispatch: Dispatch<actions.ActionType>, 
         });
 }
 
+const DEFAULT_EXCHANGE_RATE: number = 1.25;
+export function fetchExchangeRate(dispatch: Dispatch<actions.ActionType>): void {
+    dispatch(actions.fetchExchangeRateStart());
+    const url = AlphaURLBuilder.getCurrencyExchange('CAD');
+    fetch(url)
+        .then(r => r.json())
+        .then((apiResp) => {
+            const rate = parseFloat(
+                apiResp['Realtime Currency Exchange Rate']['5. Exchange Rate'],
+            );
+            dispatch(actions.fetchExchangeRateSuccess(rate));
+        }).catch((error) => { 
+            dispatch(actions.fetchExchangeRateError(DEFAULT_EXCHANGE_RATE));
+        });
+}
