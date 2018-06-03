@@ -4,11 +4,9 @@ import {
     IUpdateShareCount, 
 } from '../actions';
 import { ADD_HOLDING, UPDATE_SHARE_COUNT } from '../constants/actions';
-import { IHoldingDetails } from '../constants/types';
-import { initializeHolding, recomputeHolding } from '../utils/HoldingHelpers';
 
 export interface IHoldingsState {
-    [ticker: string]: IHoldingDetails
+    [ticker: string]: number
 };
 
 export default function addStockReducer(
@@ -29,8 +27,8 @@ function addHolding(
     action: IAddHoldingAction
 ): IHoldingsState {
     const newState = Object.assign({}, state);
-    const { ticker, value } = action;
-    newState[ticker] = initializeHolding(ticker, value);
+    const { ticker } = action;
+    newState[ticker] = 0;
     return newState;
 }
 
@@ -40,6 +38,6 @@ function udpateShareCount(
 ): IHoldingsState {
     const newState = Object.assign({}, state);
     const { ticker, count } = action;
-    newState[ticker] = recomputeHolding(newState[ticker], 100, count);
+    newState[ticker] = count;
     return newState;
 }
