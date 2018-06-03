@@ -1,5 +1,6 @@
 import { Dispatch } from 'react-redux';
 import * as actions from '../actions';
+import { parseInteger } from '../utils/Utils';
 import AlphaURLBuilder from './AlphaURLBuilder';
 
 export default function fetchStockQuote(dispatch: Dispatch<actions.ActionType>, ticker: string): void {
@@ -16,7 +17,7 @@ export default function fetchStockQuote(dispatch: Dispatch<actions.ActionType>, 
                 close: parseFloat(raw['4. close']),
                 open: parseFloat(raw['1. open']),
                 ticker,
-                volume: parseInt(raw['5. volume'], 10),
+                volume: parseInteger(raw['5. volume']),
             };
             dispatch(actions.fetchStockQuoteSuccess(ticker, quote));
             dispatch(actions.addHolding(ticker, quote.close));

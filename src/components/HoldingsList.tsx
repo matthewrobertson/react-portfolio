@@ -4,15 +4,17 @@ import HoldingListItem from './HoldingListItem';
 
 interface IHoldingListProps {
     holdings: IHoldingDetails[],
+    onShareCountChange: (ticker: string, count: number) => any,
 };
 
 const HoldingList: React.StatelessComponent<IHoldingListProps> = (props: IHoldingListProps) => {
-    const holdingsItems = props.holdings.map(
-      (x) => <HoldingListItem holding={x} key={x.ticker} />,
-    );
     return (
       <table>
-        {holdingsItems}
+        <tbody>
+        {props.holdings.map(
+          (x) => <HoldingListItem holding={x} key={x.ticker} onShareCountChange={props.onShareCountChange} />
+        )}
+        </tbody>
       </table>
     );
 };

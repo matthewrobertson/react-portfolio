@@ -5,6 +5,7 @@ import {
     FETCH_STOCK_QUOTE_ERROR,
     FETCH_STOCK_QUOTE_START,
     FETCH_STOCK_QUOTE_SUCCESS,
+    UPDATE_SHARE_COUNT,
 } from './constants/actions'
 import { IStockQuote } from './constants/types'
 
@@ -100,10 +101,28 @@ export function fetchStockQuoteError(ticker: string, error: string): IFetchStock
     };
 }
 
+/**
+ * UPDATE_SHARE_COUNT
+ */
+export interface IUpdateShareCount {
+    count: number,
+    type: UPDATE_SHARE_COUNT,
+    ticker: string,
+};
+
+export function updateShareCount(ticker: string, count: number): IUpdateShareCount {
+    return {
+        count,
+        ticker,
+        type: UPDATE_SHARE_COUNT,
+    };
+}
+
 export type ActionType = 
     IAddStockAction | 
     IAddStockChangeAction | 
     IAddHoldingAction | 
     IFetchStockQuoteError | 
     IFetchStockQuoteSuccess | 
-    IFetchStockQuoteStart;
+    IFetchStockQuoteStart |
+    IUpdateShareCount;
