@@ -19,7 +19,7 @@ export default function fetchStockQuote(dispatch: Dispatch<actions.ActionType>, 
                 volume: parseInt(raw['5. volume'], 10),
             };
             dispatch(actions.fetchStockQuoteSuccess(ticker, quote));
-            dispatch(actions.addHolding(ticker)); 
+            dispatch(actions.addHolding(ticker, quote.close));
         }).catch((error) => { 
             dispatch(actions.fetchStockQuoteError(ticker, 'Invalid Ticker'));
         });

@@ -14,12 +14,14 @@ import { IStockQuote } from './constants/types'
 export interface IAddStockAction {
     type: ADD_STOCK,
     ticker: string,
+    value: number,
 };
 
-export function addStock(ticker: string): IAddStockAction {
+export function addStock(ticker: string, value: number): IAddStockAction {
     return { 
         ticker,
         type: ADD_STOCK,
+        value,
      };
 };
 
@@ -44,12 +46,14 @@ export function addStockChange(ticker: string): IAddStockChangeAction {
 export interface IAddHoldingAction {
     type: ADD_HOLDING,
     ticker: string,
+    value: number,
 };
 
-export function addHolding(ticker: string): IAddHoldingAction {
+export function addHolding(ticker: string, value: number): IAddHoldingAction {
     return { 
         ticker,
         type: ADD_HOLDING,
+        value,
     };
 };
 

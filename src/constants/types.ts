@@ -4,3 +4,12 @@ export interface IStockQuote {
     close: number,
     volume: number,
 };
+
+export interface IHoldingDetails {
+    currentPercentage: number,
+    shareCount: number,
+    sharePrice: number,
+    targetPercent: number,
+    ticker: string,
+    totalValue: number,
+};
