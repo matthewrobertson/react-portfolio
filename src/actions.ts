@@ -8,8 +8,12 @@ import {
     FETCH_STOCK_QUOTE_START,
     FETCH_STOCK_QUOTE_SUCCESS,
     UPDATE_SHARE_COUNT,
+    UPDATE_STOCK_CURRENCY,
 } from './constants/actions'
-import { IStockQuote } from './constants/types'
+import { 
+    Currency,
+    IStockQuote,
+ } from './constants/types'
 
 /**
  * ADD_STOCK_CHANGE
@@ -142,6 +146,20 @@ export function fetchExchangeRateError(rate: number): IFetchExchangeRateError {
     };
 }
 
+export interface IUpdateStockCurrencyAction {
+    type: UPDATE_STOCK_CURRENCY,
+    ticker: string,
+    currency: Currency,
+}
+
+export function updateStockCurrency(ticker: string, currency: Currency): IUpdateStockCurrencyAction {
+    return {
+        currency,
+        ticker,
+        type: UPDATE_STOCK_CURRENCY,
+    };
+}
+
 export type ActionType = 
     IAddStockChangeAction | 
     IAddHoldingAction | 
@@ -151,4 +169,5 @@ export type ActionType =
     IUpdateShareCount |
     IFetchExchangeRateError |
     IFetchExchangeRateSuccess |
-    IFetchExchangeRateStart;
+    IFetchExchangeRateStart |
+    IUpdateStockCurrencyAction;

@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { IHoldingDetails } from '../constants/types';
+import { Currency, IHoldingDetails } from '../constants/types';
 import { formatCurrency } from '../utils/Utils';
 import HoldingListItem from './HoldingListItem';
 
 interface IHoldingListProps {
     holdings: IHoldingDetails[],
     onShareCountChange: (ticker: string, count: number) => any,
+    onUpdateCurrency: (ticker: string, currency: Currency) => any, // BORIS QUESTION: THIS IS GETTING PLUMBED THROUGH A BUNCH OF LAYERS
     netWorth: number,
 };
 
@@ -19,7 +20,8 @@ const HoldingList: React.StatelessComponent<IHoldingListProps> = (props: IHoldin
           {props.holdings.map(
             (x) => <HoldingListItem 
               holding={x} key={x.ticker} 
-              onShareCountChange={props.onShareCountChange} 
+              onShareCountChange={props.onShareCountChange}
+              onUpdateCurrency={props.onUpdateCurrency}
             />
           )}
           {netWorthRow}

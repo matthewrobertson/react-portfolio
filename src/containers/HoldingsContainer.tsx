@@ -2,18 +2,21 @@
 import { connect, Dispatch } from 'react-redux';
 import * as actions from '../actions';
 import HoldingsList from '../components/HoldingsList';
-import { IHoldingDetails } from '../constants/types';
+import { Currency, IHoldingDetails } from '../constants/types';
 import { IStoreState } from '../store';
 
+// BORIS QUESION: ORGANIZING FUNCTIONAL BUSINESS LOGIC
 const initializeHolding = (
   ticker: string, 
   sharePrice: number, 
   shareCount: number, 
   netWorth: number,
+  currency: Currency,
 ): IHoldingDetails => {
   const totalValue = sharePrice * shareCount;
   const currentPercentage = netWorth > 0 ? (totalValue / netWorth) * 100 : 0.0;
   return {
+      currency,
       currentPercentage,
       shareCount,
       sharePrice,
@@ -32,6 +35,7 @@ const initializeHoldings = (state: IStoreState, newWorth: number): IHoldingDetai
       state.stockQuotes[stock].close,
       state.holdings[stock],
       newWorth,
+      state.stockQuotes[stock].currency,
     ));
   }
   return holdings;
@@ -59,6 +63,7 @@ export function mapStateToProps(state: IStoreState) {
 export function mapDispatchToProps(dispatch: Dispatch<actions.ActionType>) {
   return {
     onShareCountChange: (ticker: string, count: number) => dispatch(actions.updateShareCount(ticker, count)),
+    onUpdateCurrency: (ticker: string, currency: Currency) => dispatch(actions.updateStockCurrency(ticker, currency))
   };
 }
 

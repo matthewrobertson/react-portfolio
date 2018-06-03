@@ -1,5 +1,6 @@
 import { Dispatch } from 'react-redux';
 import * as actions from '../actions';
+import { Currency } from '../constants/types';
 import { parseInteger } from '../utils/Utils';
 import AlphaURLBuilder from './AlphaURLBuilder';
 
@@ -13,6 +14,7 @@ export default function fetchStockQuote(dispatch: Dispatch<actions.ActionType>, 
             const raw = ts[fk];
             const quote = {
                 close: parseFloat(raw['4. close']),
+                currency: Currency.USD,
                 open: parseFloat(raw['1. open']),
                 ticker,
                 volume: parseInteger(raw['5. volume']),

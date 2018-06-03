@@ -1,8 +1,9 @@
 import { 
     ActionType, 
-    IFetchStockQuoteSuccess, 
+    IFetchStockQuoteSuccess,
+    IUpdateStockCurrencyAction, 
 } from '../actions';
-import { FETCH_STOCK_QUOTE_SUCCESS } from '../constants/actions';
+import { FETCH_STOCK_QUOTE_SUCCESS, UPDATE_STOCK_CURRENCY } from '../constants/actions';
 import { IStockQuote } from '../constants/types';
 
 
@@ -16,10 +17,27 @@ export default function stockQuotesReducer(
 ): IStockQuoteState {
     switch (action.type) {
         case FETCH_STOCK_QUOTE_SUCCESS:
-            const tAction = action as IFetchStockQuoteSuccess;
-            const newState = Object.assign({}, state);
-            newState[tAction.ticker] = tAction.quote;
-            return newState;
+            return fetchStock(state, action as IFetchStockQuoteSuccess);
+        case UPDATE_STOCK_CURRENCY:
+            return updateCurrency(state, action as IUpdateStockCurrencyAction);
     }
     return state;
 };
+
+const fetchStock = (
+    state: IStockQuoteState, 
+    action: IFetchStockQuoteSuccess,
+): IStockQuoteState => {
+    const newState = Object.assign({}, state);
+    newState[action.ticker] = action.quote;
+    return newState;
+}
+
+const updateCurrency = (
+    state: IStockQuoteState, 
+    action: IUpdateStockCurrencyAction,
+): IStockQuoteState => {
+    const newState = Object.assign({}, state);
+    newState[action.ticker].currency = action.currency;
+    return newState;
+}
