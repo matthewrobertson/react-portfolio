@@ -13,7 +13,8 @@ export interface IHoldingDetails {
     sharePrice: number,
     targetPercent: number,
     ticker: string,
-    totalValue: number,
+    usdValue: number,
+    cadValue: number,
 };
 
 export enum Currency {

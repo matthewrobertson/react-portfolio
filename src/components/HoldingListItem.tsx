@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Currency, IHoldingDetails } from '../constants/types';
-import { formatCurrency, parseInteger } from '../utils/Utils';
+import { formatCurrency, formatPercent, parseInteger } from '../utils/Utils';
 
 interface IHoldingListItemProps {
     holding: IHoldingDetails,
@@ -41,7 +41,9 @@ const HoldingListItem: React.StatelessComponent<IHoldingListItemProps> = (props:
             {Currency.CAD}
           </label>
         </td>
-        <td>{formatCurrency(holding.totalValue)}</td>
+        <td>{formatCurrency(holding.usdValue)}</td>
+        <td>{formatCurrency(holding.cadValue)}</td>
+        <td>{formatPercent(holding.currentPercentage)}</td>
       </tr>
     );
 };

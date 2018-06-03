@@ -12,17 +12,22 @@ const initializeHolding = (
   shareCount: number, 
   netWorth: number,
   currency: Currency,
+  exchangeRate: number,
 ): IHoldingDetails => {
   const totalValue = sharePrice * shareCount;
-  const currentPercentage = netWorth > 0 ? (totalValue / netWorth) * 100 : 0.0;
+  const usdValue = currency === Currency.USD ? totalValue : totalValue / exchangeRate;
+  const cadValue = currency === Currency.CAD ? totalValue : totalValue * exchangeRate;
+  const currentPercentage = netWorth > 0 ? (usdValue / netWorth) : 0.0;
   return {
+      cadValue,
       currency,
       currentPercentage,
       shareCount,
       sharePrice,
       targetPercent: 0,
       ticker,
-      totalValue,
+      usdValue,
+      
   };
 };
 
@@ -36,6 +41,7 @@ const initializeHoldings = (state: IStoreState, newWorth: number): IHoldingDetai
       state.holdings[stock],
       newWorth,
       state.stockQuotes[stock].currency,
+      state.exchangeRate.CAD,
     ));
   }
   return holdings;
@@ -43,20 +49,31 @@ const initializeHoldings = (state: IStoreState, newWorth: number): IHoldingDetai
 
 const computeNetWorth = (
   state: IStoreState,
-): number => {
-  let worth = 0;
+): {usd: number, cad: number} => {
+  let usd = 0;
+  let cad = 0;
+  const exchangeRate = state.exchangeRate.CAD;
   const stocks = Object.keys(state.holdings);
   for (const stock of stocks) {
-    worth += state.holdings[stock] * state.stockQuotes[stock].close;
+    const quote = state.stockQuotes[stock];
+    const val = state.holdings[stock] * quote.close;
+    if (quote.currency === Currency.USD) {
+      usd += val;
+      cad += (val * exchangeRate);
+    } else {
+      usd += val;
+      cad += (val / exchangeRate);
+    }
   }
-  return worth;
+  return {usd, cad};
 }
 
 export function mapStateToProps(state: IStoreState) {
   const netWorth = computeNetWorth(state);
   return {
-    holdings: initializeHoldings(state, netWorth),
-    netWorth,
+    holdings: initializeHoldings(state, netWorth.usd),
+    netWorthCAD: netWorth.cad,
+    netWorthUSD: netWorth.usd,
   };
 }
 

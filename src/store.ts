@@ -4,6 +4,7 @@ import addStockReducer, {IAddStockState} from './reducers/AddStockReducer';
 import exchangeRateReducer, { IExchangeRateState } from './reducers/ExchangeRateReducer';
 import holdingsReducer, { IHoldingsState } from './reducers/HoldingsReducer';
 import stockQuotesReducer, { IStockQuoteState } from './reducers/StockQuotesReducer';
+import { loadState, persistState } from './utils/localStorage';
 
 export interface IStoreState {
     addStock: IAddStockState,
@@ -19,4 +20,15 @@ const reducer = combineReducers({
   stockQuotes: stockQuotesReducer,
 });
 
-export default createStore<IStoreState, any, any, any>(reducer, applyMiddleware(logger));
+const storedState = loadState();
+
+const store = storedState
+  ? createStore<IStoreState, any, any, any>(reducer, storedState, applyMiddleware(logger)) 
+  : createStore<IStoreState, any, any, any>(reducer, applyMiddleware(logger));
+
+store.subscribe(() => {
+  persistState(store.getState());
+});
+
+export default store;
+

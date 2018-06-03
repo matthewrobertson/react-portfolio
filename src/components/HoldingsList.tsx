@@ -7,15 +7,27 @@ interface IHoldingListProps {
     holdings: IHoldingDetails[],
     onShareCountChange: (ticker: string, count: number) => any,
     onUpdateCurrency: (ticker: string, currency: Currency) => any, // BORIS QUESTION: THIS IS GETTING PLUMBED THROUGH A BUNCH OF LAYERS
-    netWorth: number,
+    netWorthCAD: number,
+    netWorthUSD: number,
 };
 
 const HoldingList: React.StatelessComponent<IHoldingListProps> = (props: IHoldingListProps) => {
     const netWorthRow = props.holdings.length > 0 
-      ? <NetWorthRow netWorth={props.netWorth} /> 
+      ? <NetWorthRow netWorthCAD={props.netWorthCAD} netWorthUSD={props.netWorthUSD} /> 
       : null;
     return (
-      <table style={{width: '500px', margin: '20px auto'}}>
+      <table style={{width: '1200px', margin: '20px auto'}}>
+        <thead>
+          <tr>
+            <th>Stock</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Currency</th>
+            <th>Value (USD)</th>
+            <th>Value (CAD)</th>
+            <th>% port</th>
+          </tr>
+        </thead>
         <tbody>
           {props.holdings.map(
             (x) => <HoldingListItem 
@@ -31,7 +43,8 @@ const HoldingList: React.StatelessComponent<IHoldingListProps> = (props: IHoldin
 };
 
 interface INetWorthProps {
-  netWorth: number,
+  netWorthCAD: number,
+  netWorthUSD: number,
 };
 
 const NetWorthRow: React.StatelessComponent<INetWorthProps> = (props: INetWorthProps) => {
@@ -39,8 +52,10 @@ const NetWorthRow: React.StatelessComponent<INetWorthProps> = (props: INetWorthP
     <tr>
       <td/>
       <td/>
-      <td>Net Worth:</td>
-      <td>{formatCurrency(props.netWorth)}</td>
+      <td/>
+      <td>Net:</td>
+      <td>{formatCurrency(props.netWorthUSD)}</td>
+      <td>{formatCurrency(props.netWorthCAD)}</td>
     </tr>
   );
 };
