@@ -1,5 +1,5 @@
 import { Dispatch } from 'react-redux';
-import * as actions from '../actions';
+import * as actions from '../actions/actions';
 import { Currency } from '../constants/types';
 import { parseInteger } from '../utils/Utils';
 import AlphaURLBuilder from './AlphaURLBuilder';

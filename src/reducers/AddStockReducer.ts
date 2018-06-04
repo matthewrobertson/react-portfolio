@@ -1,11 +1,9 @@
 import { 
     ActionType, 
+    ADD_HOLDING,
+    ADD_STOCK_CHANGE, 
     IAddStockChangeAction,
-} from '../actions';
-import {
-    ADD_HOLDING, 
-    ADD_STOCK_CHANGE,
-} from '../constants/actions';
+} from '../actions/actions';
 
 export interface IAddStockState {
     ticker: string,

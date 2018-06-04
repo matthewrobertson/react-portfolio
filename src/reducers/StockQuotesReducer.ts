@@ -1,9 +1,10 @@
 import { 
     ActionType, 
-    IFetchStockQuoteSuccess,
+    FETCH_STOCK_QUOTE_SUCCESS,
+    IFetchStockQuoteSuccess, 
     IUpdateStockCurrencyAction, 
-} from '../actions';
-import { FETCH_STOCK_QUOTE_SUCCESS, UPDATE_STOCK_CURRENCY } from '../constants/actions';
+    UPDATE_STOCK_CURRENCY,
+} from '../actions/actions';
 import { IStockQuote } from '../constants/types';
 
 

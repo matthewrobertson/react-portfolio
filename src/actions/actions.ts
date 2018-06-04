@@ -1,25 +1,25 @@
-import { 
-    ADD_HOLDING,
-    ADD_STOCK_CHANGE,
-    FETCH_EXCHANGE_RATE_ERROR,
-    FETCH_EXCHANGE_RATE_START,
-    FETCH_EXCHANGE_RATE_SUCCESS,
-    FETCH_STOCK_QUOTE_ERROR,
-    FETCH_STOCK_QUOTE_START,
-    FETCH_STOCK_QUOTE_SUCCESS,
-    UPDATE_SHARE_COUNT,
-    UPDATE_STOCK_CURRENCY,
-} from './constants/actions'
+import { Action } from 'redux';
 import { 
     Currency,
     IStockQuote,
- } from './constants/types'
+ } from '../constants/types';
+
+ export const ADD_STOCK_CHANGE = 'ADD_STOCK_CHANGE';
+ export const ADD_HOLDING = 'ADD_HOLDING';
+ export const FETCH_STOCK_QUOTE_START = 'FETCH_STOCK_QUOTE_START';
+ export const FETCH_STOCK_QUOTE_SUCCESS = 'FETCH_STOCK_QUOTE_SUCCESS';
+ export const FETCH_STOCK_QUOTE_ERROR = 'FETCH_STOCK_QUOTE_ERROR';
+ export const UPDATE_STOCK_CURRENCY = 'UPDATE_STOCK_CURRENCY';
+ export const UPDATE_SHARE_COUNT = 'UPDATE_SHARE_COUNT';
+ export const FETCH_EXCHANGE_RATE_START = 'FETCH_EXCHANGE_RATE_START';
+ export const FETCH_EXCHANGE_RATE_SUCCESS = 'FETCH_EXCHANGE_RATE_SUCCESS';
+ export const FETCH_EXCHANGE_RATE_ERROR = 'FETCH_EXCHANGE_RATE_ERROR';
 
 /**
  * ADD_STOCK_CHANGE
  */
-export interface IAddStockChangeAction {
-    type: ADD_STOCK_CHANGE,
+export interface IAddStockChangeAction extends Action {
+    type: typeof ADD_STOCK_CHANGE,
     ticker: string,
 };
 
@@ -33,25 +33,22 @@ export function addStockChange(ticker: string): IAddStockChangeAction {
 /**
  * ADD_HOLDING
  */
-export interface IAddHoldingAction {
-    type: ADD_HOLDING,
-    ticker: string,
-    value: number,
-};
 
-export function addHolding(ticker: string, value: number): IAddHoldingAction {
+
+export function addHolding(ticker: string, value: number) {
     return { 
         ticker,
-        type: ADD_HOLDING,
+        type: ADD_HOLDING as typeof ADD_HOLDING,
         value,
     };
 };
+export type IAddHoldingAction = ReturnType<typeof addHolding>;
 
 /**
  * FETCH_STOCK_***
  */
-export interface IFetchStockQuoteStart {
-    type: FETCH_STOCK_QUOTE_START,
+export interface IFetchStockQuoteStart extends Action {
+    type: typeof FETCH_STOCK_QUOTE_START,
     ticker: string,
 };
 
@@ -62,8 +59,8 @@ export function fetchStockQuoteStart(ticker: string): IFetchStockQuoteStart {
     };
 }
 
-export interface IFetchStockQuoteSuccess {
-    type: FETCH_STOCK_QUOTE_SUCCESS,
+export interface IFetchStockQuoteSuccess extends Action {
+    type: typeof FETCH_STOCK_QUOTE_SUCCESS,
     ticker: string,
     quote: IStockQuote,
 };
@@ -76,9 +73,9 @@ export function fetchStockQuoteSuccess(ticker: string, quote: IStockQuote): IFet
     };
 }
 
-export interface IFetchStockQuoteError {
+export interface IFetchStockQuoteError extends Action {
     error: string,
-    type: FETCH_STOCK_QUOTE_ERROR,
+    type: typeof FETCH_STOCK_QUOTE_ERROR,
     ticker: string,
 };
 
@@ -93,9 +90,9 @@ export function fetchStockQuoteError(ticker: string, error: string): IFetchStock
 /**
  * UPDATE_SHARE_COUNT
  */
-export interface IUpdateShareCount {
+export interface IUpdateShareCount extends Action {
     count: number,
-    type: UPDATE_SHARE_COUNT,
+    type: typeof UPDATE_SHARE_COUNT,
     ticker: string,
 };
 
@@ -112,8 +109,8 @@ export function updateShareCount(ticker: string, count: number): IUpdateShareCou
  */
 
 
-export interface IFetchExchangeRateStart {
-    type: string,
+export interface IFetchExchangeRateStart extends Action {
+    type: typeof FETCH_EXCHANGE_RATE_START,
 }
 
 export function fetchExchangeRateStart(): IFetchExchangeRateStart {
@@ -122,8 +119,8 @@ export function fetchExchangeRateStart(): IFetchExchangeRateStart {
     };
 }
 
-export interface IFetchExchangeRateSuccess {
-    type: FETCH_EXCHANGE_RATE_SUCCESS,
+export interface IFetchExchangeRateSuccess extends Action {
+    type: typeof FETCH_EXCHANGE_RATE_SUCCESS,
     rate: number,
 }
 
@@ -134,8 +131,8 @@ export function fetchExchangeRateSuccess(rate: number): IFetchExchangeRateSucces
     };
 }
 
-export interface IFetchExchangeRateError {
-    type: FETCH_EXCHANGE_RATE_SUCCESS,
+export interface IFetchExchangeRateError extends Action {
+    type: typeof FETCH_EXCHANGE_RATE_ERROR,
     rate: number,
 }
 
@@ -146,8 +143,8 @@ export function fetchExchangeRateError(rate: number): IFetchExchangeRateError {
     };
 }
 
-export interface IUpdateStockCurrencyAction {
-    type: UPDATE_STOCK_CURRENCY,
+export interface IUpdateStockCurrencyAction extends Action {
+    type: typeof UPDATE_STOCK_CURRENCY,
     ticker: string,
     currency: Currency,
 }
@@ -159,6 +156,8 @@ export function updateStockCurrency(ticker: string, currency: Currency): IUpdate
         type: UPDATE_STOCK_CURRENCY,
     };
 }
+
+// type IUpdateStockCurrencyAction = ReturnType<updateStockCurrency>;
 
 export type ActionType = 
     IAddStockChangeAction | 

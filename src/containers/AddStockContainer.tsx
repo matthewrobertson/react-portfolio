@@ -1,5 +1,5 @@
 import { connect, Dispatch } from 'react-redux';
-import * as actions from '../actions';
+import * as actions from '../actions/actions';
 import AddStockForm from '../components/AddStockForm';
 import fetchStockQuote from '../fetchers/StockFetcher';
 import { IStoreState } from '../store';

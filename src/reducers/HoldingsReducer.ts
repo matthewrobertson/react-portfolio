@@ -1,9 +1,10 @@
 import { 
     ActionType, 
-    IAddHoldingAction,
-    IUpdateShareCount, 
-} from '../actions';
-import { ADD_HOLDING, UPDATE_SHARE_COUNT } from '../constants/actions';
+    ADD_HOLDING,
+    IAddHoldingAction, 
+    IUpdateShareCount,
+    UPDATE_SHARE_COUNT,
+} from '../actions/actions';
 
 export interface IHoldingsState {
     [ticker: string]: number

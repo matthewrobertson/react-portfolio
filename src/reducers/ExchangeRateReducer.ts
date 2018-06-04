@@ -1,14 +1,12 @@
 import { 
     ActionType, 
-    IFetchExchangeRateError,
-    IFetchExchangeRateStart,
-    IFetchExchangeRateSuccess,
-} from '../actions';
-import { 
     FETCH_EXCHANGE_RATE_ERROR, 
     FETCH_EXCHANGE_RATE_START,
     FETCH_EXCHANGE_RATE_SUCCESS,
-} from '../constants/actions';
+    IFetchExchangeRateError,
+    IFetchExchangeRateStart,
+    IFetchExchangeRateSuccess,
+} from '../actions/actions';
 
 export interface IExchangeRateState {
     isLoading: boolean,
@@ -21,11 +19,11 @@ export default function exhangeRateReducer(
 ): IExchangeRateState {
     switch (action.type) {
         case FETCH_EXCHANGE_RATE_START:
-            return start(state, action as IFetchExchangeRateStart);
-        case FETCH_EXCHANGE_RATE_SUCCESS:
-            return onComplete(state, action as IFetchExchangeRateSuccess);
+            return start(state, action);
         case FETCH_EXCHANGE_RATE_ERROR:
-            return onComplete(state, action as IFetchExchangeRateError);
+        case FETCH_EXCHANGE_RATE_SUCCESS:
+            return onComplete(state, action);
+        
     }
     return state;
 };

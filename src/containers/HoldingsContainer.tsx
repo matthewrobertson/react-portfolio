@@ -1,6 +1,6 @@
 // import { values } from 'lodash-es';
 import { connect, Dispatch } from 'react-redux';
-import * as actions from '../actions';
+import * as actions from '../actions/actions';
 import HoldingsList from '../components/HoldingsList';
 import { Currency, IHoldingDetails } from '../constants/types';
 import { IStoreState } from '../store';
@@ -32,19 +32,15 @@ const initializeHolding = (
 };
 
 const initializeHoldings = (state: IStoreState, newWorth: number): IHoldingDetails[] => {
-  const holdings = [];
   const stocks = Object.keys(state.holdings);
-  for (const stock of stocks) {
-    holdings.push(initializeHolding(
-      stock,
-      state.stockQuotes[stock].close,
-      state.holdings[stock],
-      newWorth,
-      state.stockQuotes[stock].currency,
-      state.exchangeRate.CAD,
-    ));
-  }
-  return holdings;
+  return stocks.map((stock) => initializeHolding(
+    stock,
+    state.stockQuotes[stock].close,
+    state.holdings[stock],
+    newWorth,
+    state.stockQuotes[stock].currency,
+    state.exchangeRate.CAD,
+  ));
 };
 
 const computeNetWorth = (
