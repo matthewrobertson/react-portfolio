@@ -6,7 +6,8 @@ import HoldingListItem from './HoldingListItem';
 interface IHoldingListProps {
     holdings: IHoldingDetails[],
     onShareCountChange: (ticker: string, count: number) => any,
-    onUpdateCurrency: (ticker: string, currency: Currency) => any, // BORIS QUESTION: THIS IS GETTING PLUMBED THROUGH A BUNCH OF LAYERS
+    onUpdateCurrency: (ticker: string, currency: Currency) => any,
+    onUpdateTarget: (ticker: string, targetPrecent: number) => any,
     netWorthCAD: number,
     netWorthUSD: number,
 };
@@ -26,6 +27,8 @@ const HoldingList: React.StatelessComponent<IHoldingListProps> = (props: IHoldin
             <th>Value (USD)</th>
             <th>Value (CAD)</th>
             <th>% port</th>
+            <th>% target</th>
+            <th>Buy / Sell</th>
           </tr>
         </thead>
         <tbody>
@@ -34,6 +37,7 @@ const HoldingList: React.StatelessComponent<IHoldingListProps> = (props: IHoldin
               holding={x} key={x.ticker} 
               onShareCountChange={props.onShareCountChange}
               onUpdateCurrency={props.onUpdateCurrency}
+              onUpdateTarget={props.onUpdateTarget}
             />
           )}
           {netWorthRow}

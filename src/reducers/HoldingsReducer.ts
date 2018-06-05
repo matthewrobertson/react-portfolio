@@ -3,11 +3,17 @@ import {
     ADD_HOLDING,
     IAddHoldingAction, 
     IUpdateShareCount,
+    IUpdateTargetPercent,
+    UPDATE_HOLDING_PERCENT,
     UPDATE_SHARE_COUNT,
 } from '../actions/actions';
 
+interface IHolding {
+    count: number, 
+    target: number,
+}
 export interface IHoldingsState {
-    [ticker: string]: number
+    [ticker: string]: IHolding
 };
 
 export default function addStockReducer(
@@ -16,12 +22,15 @@ export default function addStockReducer(
 ): IHoldingsState {
     switch (action.type) {
         case ADD_HOLDING:
-            return addHolding(state, action as IAddHoldingAction);
+            return addHolding(state, action);
         case UPDATE_SHARE_COUNT:
-            return udpateShareCount(state, action as IUpdateShareCount);
+            return udpateShareCount(state, action);
+        case UPDATE_HOLDING_PERCENT:
+            return updateHoldingPercent(state, action);
     }
     return state;
 };
+
 
 function addHolding(
     state: IHoldingsState,
@@ -29,7 +38,10 @@ function addHolding(
 ): IHoldingsState {
     const newState = Object.assign({}, state);
     const { ticker } = action;
-    newState[ticker] = 0;
+    newState[ticker] = {
+        count: 0,
+        target: 0,
+    };
     return newState;
 }
 
@@ -39,6 +51,16 @@ function udpateShareCount(
 ): IHoldingsState {
     const newState = Object.assign({}, state);
     const { ticker, count } = action;
-    newState[ticker] = count;
+    newState[ticker].count = count;
+    return newState;
+}
+
+function updateHoldingPercent(
+    state: IHoldingsState,
+    action: IUpdateTargetPercent,
+): IHoldingsState {
+    const newState = Object.assign({}, state);
+    const { ticker, target } = action;
+    newState[ticker].target = target;
     return newState;
 }

@@ -5,7 +5,8 @@ import { formatCurrency, formatPercent, parseInteger } from '../utils/Utils';
 interface IHoldingListItemProps {
     holding: IHoldingDetails,
     onShareCountChange: (ticker: string, count: number) => any,
-    onUpdateCurrency: (ticker: string, currency: Currency) => any, // BORIS QUESTION: THIS IS GETTING PLUMBED THROUGH A BUNCH OF LAYERS
+    onUpdateCurrency: (ticker: string, currency: Currency) => any,
+    onUpdateTarget: (ticker: string, targetPrecent: number) => any,
 };
 
 const HoldingListItem: React.StatelessComponent<IHoldingListItemProps> = (props: IHoldingListItemProps) => {
@@ -18,6 +19,11 @@ const HoldingListItem: React.StatelessComponent<IHoldingListItemProps> = (props:
       const { value } = e.target;
       const { ticker } = props.holding;
       props.onUpdateCurrency(ticker, value as Currency)
+    };
+    const onTargetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const target = parseFloat(e.target.value) || 0;
+      const { ticker } = props.holding;
+      props.onUpdateTarget(ticker, target)
     };
     const { holding } = props;
     return (
@@ -44,6 +50,16 @@ const HoldingListItem: React.StatelessComponent<IHoldingListItemProps> = (props:
         <td>{formatCurrency(holding.usdValue)}</td>
         <td>{formatCurrency(holding.cadValue)}</td>
         <td>{formatPercent(holding.currentPercentage)}</td>
+        <td>
+          <input 
+            min="0" 
+            onChange={onTargetChange} 
+            type="number" 
+            value={holding.targetPercent} />
+        </td>
+        <td>
+          {holding.shareDiff}
+        </td>
       </tr>
     );
 };

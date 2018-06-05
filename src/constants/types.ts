@@ -15,6 +15,7 @@ export interface IHoldingDetails {
     ticker: string,
     usdValue: number,
     cadValue: number,
+    shareDiff: number,
 };
 
 export enum Currency {

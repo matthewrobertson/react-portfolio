@@ -14,6 +14,7 @@ import {
  export const FETCH_EXCHANGE_RATE_START = 'FETCH_EXCHANGE_RATE_START';
  export const FETCH_EXCHANGE_RATE_SUCCESS = 'FETCH_EXCHANGE_RATE_SUCCESS';
  export const FETCH_EXCHANGE_RATE_ERROR = 'FETCH_EXCHANGE_RATE_ERROR';
+ export const UPDATE_HOLDING_PERCENT = 'UPDATE_HOLDING_PERCENT';
 
 /**
  * ADD_STOCK_CHANGE
@@ -157,6 +158,20 @@ export function updateStockCurrency(ticker: string, currency: Currency): IUpdate
     };
 }
 
+export interface IUpdateTargetPercent extends Action {
+    type: typeof UPDATE_HOLDING_PERCENT,
+    ticker: string,
+    target: number,
+}
+
+export function updateTargetPercent(ticker: string, target: number): IUpdateTargetPercent {
+    return {
+        target,
+        ticker,
+        type: UPDATE_HOLDING_PERCENT,
+    };
+}
+
 // type IUpdateStockCurrencyAction = ReturnType<updateStockCurrency>;
 
 export type ActionType = 
@@ -169,4 +184,5 @@ export type ActionType =
     IFetchExchangeRateError |
     IFetchExchangeRateSuccess |
     IFetchExchangeRateStart |
-    IUpdateStockCurrencyAction;
+    IUpdateStockCurrencyAction |
+    IUpdateTargetPercent;
