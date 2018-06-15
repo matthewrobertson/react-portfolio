@@ -29,7 +29,15 @@ export default function addStockReducer(
   switch (action.type) {
     case ADD_STOCK_CHANGE:
       const newState = Object.assign({}, state);
-      newState[action.field] = action.value;
+      if (action.field === "numShares") {
+        newState.numShares = parseInt(action.value, 10);
+      } else if (action.field === "currencyAmount") {
+        newState.currencyAmount = parseFloat(action.value);
+      } else {
+        // @ts-ignore
+        newState[action.field] = action.value;
+      }
+
       return newState;
     case ADD_HOLDING:
     case ADD_CASH:
