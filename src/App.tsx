@@ -1,15 +1,16 @@
-import * as React from 'react';
-import { Provider } from 'react-redux';
-import './App.css';
-import AddStockForm from './containers/AddStockContainer';
-import Holdings from './containers/HoldingsContainer';
-import { fetchExchangeRate } from './fetchers/StockFetcher';
-import store from './store';
+import * as React from "react";
+import { Provider } from "react-redux";
+import "./App.css";
+import AddStockForm from "./containers/AddStockContainer";
+import Holdings from "./containers/HoldingsContainer";
+import { fetchExchangeRate } from "./fetchers/StockFetcher";
+import { Pivot, PivotItem } from "office-ui-fabric-react/lib/Pivot";
+import store from "./store";
 
-import logo from './logo.svg';
+import logo from "./logo.svg";
+import BalancesContainer from "./containers/BalancesContainer";
 
 class App extends React.Component {
-
   public componentDidMount() {
     fetchExchangeRate(store.dispatch.bind(store));
   }
@@ -22,12 +23,19 @@ class App extends React.Component {
             <img src={logo} className="App-logo" alt="logo" />
             <h1 className="App-title">Welcome to React</h1>
           </header>
-          <p className="App-intro">
-            To get started, edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <div>
-            <AddStockForm />
-            <Holdings />
+          <div className="App-ContentWrapper">
+            <Pivot>
+              <PivotItem headerText="Balances">
+                <BalancesContainer />
+              </PivotItem>
+              <PivotItem headerText="Positions">
+                <Holdings />
+                <AddStockForm />
+              </PivotItem>
+              <PivotItem headerText="Rebalance">
+                <Holdings />
+              </PivotItem>
+            </Pivot>
           </div>
         </div>
       </Provider>
