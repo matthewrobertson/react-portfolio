@@ -5,8 +5,10 @@
   "homepage": "https://matthewrobertson.github.io/react-portfolio/",
   "dependencies": {
     "@types/lodash-es": "^4.17.0",
+    "@types/prop-types": "^15.5.3",
     "@types/react-redux": "^6.0.0",
     "lodash-es": "^4.17.10",
+    "office-ui-fabric-react": "^6.8.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-redux": "^5.0.7",
@@ -29,6 +31,7 @@
     "@types/react-dom": "^16.0.5",
     "@types/redux-logger": "^3.0.6",
     "gh-pages": "^1.2.0",
+    "prettier": "1.13.5",
     "typescript": "^2.8.3"
   }
 }

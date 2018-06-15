@@ -3,31 +3,38 @@ import {
     Currency,
     IStockQuote,
  } from '../constants/types';
+import { IAddStockState } from '../reducers/AddStockReducer';
 
- export const ADD_STOCK_CHANGE = 'ADD_STOCK_CHANGE';
- export const ADD_HOLDING = 'ADD_HOLDING';
- export const FETCH_STOCK_QUOTE_START = 'FETCH_STOCK_QUOTE_START';
- export const FETCH_STOCK_QUOTE_SUCCESS = 'FETCH_STOCK_QUOTE_SUCCESS';
- export const FETCH_STOCK_QUOTE_ERROR = 'FETCH_STOCK_QUOTE_ERROR';
- export const UPDATE_STOCK_CURRENCY = 'UPDATE_STOCK_CURRENCY';
- export const UPDATE_SHARE_COUNT = 'UPDATE_SHARE_COUNT';
- export const FETCH_EXCHANGE_RATE_START = 'FETCH_EXCHANGE_RATE_START';
- export const FETCH_EXCHANGE_RATE_SUCCESS = 'FETCH_EXCHANGE_RATE_SUCCESS';
- export const FETCH_EXCHANGE_RATE_ERROR = 'FETCH_EXCHANGE_RATE_ERROR';
- export const UPDATE_HOLDING_PERCENT = 'UPDATE_HOLDING_PERCENT';
+export const ADD_STOCK_CHANGE = 'ADD_STOCK_CHANGE';
+export const ADD_HOLDING = 'ADD_HOLDING';
+export const ADD_CASH = 'ADD_CASH';
+export const FETCH_STOCK_QUOTE_START = 'FETCH_STOCK_QUOTE_START';
+export const FETCH_STOCK_QUOTE_SUCCESS = 'FETCH_STOCK_QUOTE_SUCCESS';
+export const FETCH_STOCK_QUOTE_ERROR = 'FETCH_STOCK_QUOTE_ERROR';
+export const UPDATE_STOCK_CURRENCY = 'UPDATE_STOCK_CURRENCY';
+export const UPDATE_SHARE_COUNT = 'UPDATE_SHARE_COUNT';
+export const FETCH_EXCHANGE_RATE_START = 'FETCH_EXCHANGE_RATE_START';
+export const FETCH_EXCHANGE_RATE_SUCCESS = 'FETCH_EXCHANGE_RATE_SUCCESS';
+export const FETCH_EXCHANGE_RATE_ERROR = 'FETCH_EXCHANGE_RATE_ERROR';
+export const UPDATE_HOLDING_PERCENT = 'UPDATE_HOLDING_PERCENT';
 
 /**
  * ADD_STOCK_CHANGE
  */
 export interface IAddStockChangeAction extends Action {
     type: typeof ADD_STOCK_CHANGE,
-    ticker: string,
+    field: keyof IAddStockState,
+    value: string | number | Currency,
 };
 
-export function addStockChange(ticker: string): IAddStockChangeAction {
+export function addStockChange(
+    field: keyof IAddStockState, 
+    value: string | number | Currency,
+): IAddStockChangeAction {
     return { 
-        ticker,
+        field,
         type: ADD_STOCK_CHANGE,
+        value,
     };
 };
 
@@ -44,6 +51,16 @@ export function addHolding(ticker: string, value: number) {
     };
 };
 export type IAddHoldingAction = ReturnType<typeof addHolding>;
+
+export function addCash(currency: Currency, amount: number) {
+    return {
+        type: ADD_CASH as typeof ADD_CASH,
+        currency,
+        amount,
+    };
+}
+
+export type IAddCashAction = ReturnType<typeof addCash>;
 
 /**
  * FETCH_STOCK_***
@@ -177,6 +194,7 @@ export function updateTargetPercent(ticker: string, target: number): IUpdateTarg
 export type ActionType = 
     IAddStockChangeAction | 
     IAddHoldingAction | 
+    IAddCashAction |
     IFetchStockQuoteError | 
     IFetchStockQuoteSuccess | 
     IFetchStockQuoteStart |

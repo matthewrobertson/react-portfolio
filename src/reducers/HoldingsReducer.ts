@@ -31,7 +31,6 @@ export default function addStockReducer(
     return state;
 };
 
-
 function addHolding(
     state: IHoldingsState,
     action: IAddHoldingAction
