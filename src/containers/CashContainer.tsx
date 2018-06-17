@@ -16,11 +16,15 @@ export function mapStateToProps(state: IStoreState) {
   const usd = getCashAmount(state, Currency.USD);
   const usdPercent = usd / netWorthUSD;
   const cadPercent = cad / exchangeRate / netWorthUSD;
+  const usdRate = 1.0;
+  const cadRate = state.exchangeRate.CAD;
   return {
     cad,
     usd,
     usdPercent,
     cadPercent,
+    usdRate,
+    cadRate,
   };
 }
 

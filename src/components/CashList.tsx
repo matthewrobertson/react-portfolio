@@ -11,10 +11,13 @@ interface ICashListProps {
   cad: number;
   usdPercent: number;
   cadPercent: number;
+  usdRate: number;
+  cadRate: number;
 }
 
 const columns = {
-  rowLabel: "",
+  rowLabel: "Currency",
+  exchange: "Exchange Rate",
   total: "Total",
   per_port: "Portfolio %",
 };
@@ -28,10 +31,16 @@ const getColumn = (x: string): IColumn => {
   };
 };
 
-const getItem = (label: string, total: number, percent: number) => {
+const getItem = (
+  label: string,
+  exchange: number,
+  total: number,
+  percent: number
+) => {
   return {
     key: label,
     rowLabel: label,
+    exchange: formatCurrency(exchange),
     total: formatCurrency(total),
     per_port: formatPercent(percent),
   };
@@ -44,8 +53,8 @@ const CashList: React.StatelessComponent<ICashListProps> = (
     <div>
       <DetailsList
         items={[
-          getItem("USD", props.usd, props.usdPercent),
-          getItem("CAD", props.cad, props.cadPercent),
+          getItem("USD", props.usdRate, props.usd, props.usdPercent),
+          getItem("CAD", props.cadRate, props.cad, props.cadPercent),
         ]}
         columns={Object.keys(columns).map(getColumn)}
         selectionMode={SelectionMode.none}
