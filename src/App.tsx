@@ -10,6 +10,7 @@ import store from "./store";
 import logo from "./logo.svg";
 import BalancesContainer from "./containers/BalancesContainer";
 import CashContainer from "./containers/CashContainer";
+import EquitiesContainer from "./containers/EquitiesContainer";
 
 class App extends React.Component {
   public componentDidMount() {
@@ -30,10 +31,11 @@ class App extends React.Component {
                 <BalancesContainer />
               </PivotItem>
               <PivotItem headerText="Positions">
-                <Holdings />
-                <AddStockForm />
+                <h2 className="ms-font-xxl">Equities</h2>
+                <EquitiesContainer />
                 <h2 className="ms-font-xxl">Cash</h2>
                 <CashContainer />
+                <AddStockForm />
               </PivotItem>
               <PivotItem headerText="Rebalance">
                 <Holdings />
