@@ -18,7 +18,7 @@ export default function cashHoldingReducer(
       if (newState[action.currency] == null) {
         newState[action.currency] = { count: 0, target: 0 };
       }
-      newState[action.currency].count += action.amount;
+      newState[action.currency].count = action.amount;
       return newState;
   }
   return state;
