@@ -2,7 +2,7 @@ import * as React from "react";
 import { Provider } from "react-redux";
 import "./App.css";
 import AddStockForm from "./containers/AddStockContainer";
-import Holdings from "./containers/HoldingsContainer";
+// import Holdings from "./containers/HoldingsContainer";
 import { fetchExchangeRate } from "./fetchers/StockFetcher";
 import { Pivot, PivotItem } from "office-ui-fabric-react/lib/Pivot";
 import store from "./store";
@@ -11,6 +11,8 @@ import logo from "./logo.svg";
 import BalancesContainer from "./containers/BalancesContainer";
 import CashContainer from "./containers/CashContainer";
 import EquitiesContainer from "./containers/EquitiesContainer";
+import RebalanceContainer from "./containers/RebalanceContainer";
+import HoldingsContainer from "./containers/HoldingsContainer";
 
 class App extends React.Component {
   public componentDidMount() {
@@ -38,7 +40,8 @@ class App extends React.Component {
                 <AddStockForm />
               </PivotItem>
               <PivotItem headerText="Rebalance">
-                <Holdings />
+                <RebalanceContainer />
+                <HoldingsContainer />
               </PivotItem>
             </Pivot>
           </div>
