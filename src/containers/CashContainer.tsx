@@ -14,8 +14,8 @@ export function mapStateToProps(state: IStoreState) {
   const netWorthUSD = computeNetWorth(state);
   const cad = getCashAmount(state, Currency.CAD);
   const usd = getCashAmount(state, Currency.USD);
-  const usdPercent = usd / netWorthUSD;
-  const cadPercent = cad / exchangeRate / netWorthUSD;
+  const usdPercent = netWorthUSD === 0 ? 0 : usd / netWorthUSD;
+  const cadPercent = netWorthUSD  === 0 ? 0 : cad / exchangeRate / netWorthUSD;
   const usdRate = 1.0;
   const cadRate = state.exchangeRate.CAD;
   return {
