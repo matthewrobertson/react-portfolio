@@ -11,13 +11,15 @@ const initializeHolding = (
   netWorth: number,
   currency: Currency,
   exchangeRate: number,
-  targetPercent: number,
-  buySell: number
+  targetPercent: number
 ): IRebalanceListItem => {
   const totalValue = price * shareCount;
   const positionValue =
     currency === Currency.USD ? totalValue : totalValue / exchangeRate;
   const percentPort = netWorth > 0 ? positionValue / netWorth : 0.0;
+  const buySell = Math.floor(
+    (netWorth * targetPercent) / price / 100 - shareCount
+  );
 
   return {
     stock,
@@ -42,8 +44,7 @@ const initializeHoldings = (
       newWorth,
       state.stockQuotes[stock].currency,
       state.exchangeRate.CAD,
-      state.holdings[stock].target,
-      5
+      state.holdings[stock].target
     )
   );
 };
