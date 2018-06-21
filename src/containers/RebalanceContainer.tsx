@@ -2,7 +2,12 @@ import { connect } from "react-redux";
 import RebalanceList, { IRebalanceListItem } from "../components/RebalanceList";
 import { Currency } from "../constants/types";
 import { IStoreState } from "../store";
-import { computeTotalEquity } from "../services/SummationService";
+import {
+  computeTotalEquity,
+  computeRebalanceCash,
+} from "../services/SummationService";
+import { Dispatch } from "react-redux";
+import * as actions from "../actions/actions";
 
 const initializeHolding = (
   stock: string,
@@ -49,11 +54,25 @@ const initializeHoldings = (
   );
 };
 
-export function mapStateToProps(state: IStoreState) {
-  const netWorth = computeTotalEquity(state);
+export function mapDispatchToProps(dispatch: Dispatch<actions.ActionType>) {
   return {
-    equities: initializeHoldings(state, netWorth),
+    onChangedRebalanceCashCAD: (amount: string) =>
+      dispatch(actions.updateRebalanceCash(Currency.CAD, amount)),
+    onChangedRebalanceCashUSD: (amount: string) =>
+      dispatch(actions.updateRebalanceCash(Currency.USD, amount)),
   };
 }
 
-export default connect(mapStateToProps)(RebalanceList);
+export function mapStateToProps(state: IStoreState) {
+  const netWorth = computeTotalEquity(state) + computeRebalanceCash(state);
+  return {
+    equities: initializeHoldings(state, netWorth),
+    rebalanceCashUSD: state.rebalanceCash.USD,
+    rebalanceCashCAD: state.rebalanceCash.CAD,
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RebalanceList);

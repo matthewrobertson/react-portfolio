@@ -17,16 +17,33 @@ export const computeTotalEquity = (state: IStoreState): number => {
   return totalUSD;
 };
 
+export const computeRebalanceCash = (state: IStoreState): number => {
+  return sumCash(
+    state.rebalanceCash.CAD,
+    state.rebalanceCash.USD,
+    state.exchangeRate.CAD
+  );
+};
+
 export const computeTotalCash = (state: IStoreState): number => {
+  return sumCash(
+    state.cash[Currency.CAD] ? state.cash[Currency.CAD].count : 0,
+    state.cash[Currency.USD] ? state.cash[Currency.USD].count : 0,
+    state.exchangeRate.CAD
+  );
+};
+
+const sumCash = (
+  cad: number | null,
+  usd: number | null,
+  exchangeRate: number
+): number => {
   let totalUSD = 0;
-  const usdHolding = state.cash[Currency.USD];
-  const cadHolding = state.cash[Currency.CAD];
-  const exchangeRate = state.exchangeRate.CAD;
-  if (usdHolding) {
-    totalUSD += usdHolding.count;
+  if (usd) {
+    totalUSD += usd;
   }
-  if (cadHolding) {
-    totalUSD += cadHolding.count / exchangeRate;
+  if (cad) {
+    totalUSD += cad / exchangeRate;
   }
   return totalUSD;
 };

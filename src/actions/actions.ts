@@ -15,6 +15,7 @@ export const FETCH_EXCHANGE_RATE_START = "FETCH_EXCHANGE_RATE_START";
 export const FETCH_EXCHANGE_RATE_SUCCESS = "FETCH_EXCHANGE_RATE_SUCCESS";
 export const FETCH_EXCHANGE_RATE_ERROR = "FETCH_EXCHANGE_RATE_ERROR";
 export const UPDATE_HOLDING_PERCENT = "UPDATE_HOLDING_PERCENT";
+export const UPDATE_REBALANCE_CASH = "UPDATE_REBALANCE_CASH";
 
 /**
  * ADD_STOCK_CHANGE
@@ -211,7 +212,15 @@ export function updateTargetPercent(
   };
 }
 
-// type IUpdateStockCurrencyAction = ReturnType<updateStockCurrency>;
+export function updateRebalanceCash(currency: Currency, amountStr: string) {
+  const amount = parseFloat(amountStr);
+  return {
+    currency,
+    amount: isNaN(amount) ? null : amount,
+    type: UPDATE_REBALANCE_CASH as typeof UPDATE_REBALANCE_CASH,
+  };
+}
+type IUpdateRebalanceCash = ReturnType<typeof updateRebalanceCash>;
 
 export type ActionType =
   | IAddStockChangeAction
@@ -226,4 +235,5 @@ export type ActionType =
   | IFetchExchangeRateStart
   | IUpdateStockCurrencyAction
   | IUpdateTargetPercent
+  | IUpdateRebalanceCash
   | IAddStockErrorAction;

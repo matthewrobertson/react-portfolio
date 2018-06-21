@@ -5,9 +5,14 @@ import {
   SelectionMode,
 } from "office-ui-fabric-react/lib/DetailsList";
 import { formatCurrency, formatPercent } from "../utils/Utils";
+import { TextField } from "office-ui-fabric-react/lib/TextField";
 
 interface IRebalanceListProps {
+  rebalanceCashUSD: number;
+  rebalanceCashCAD: number;
   equities: IRebalanceListItem[];
+  onChangedRebalanceCashUSD: (amount: string) => any;
+  onChangedRebalanceCashCAD: (amount: string) => any;
 }
 
 export interface IRebalanceListItem {
@@ -37,11 +42,30 @@ const getColumn = (x: string): IColumn => {
   };
 };
 
+/*
+const validateNumberInput = (value: string): string => {
+  if (value.trim().length === 0 || isNaN(+value)) {
+    return "0";
+  }
+  return value;
+};
+*/
+
 const RebalanceList: React.StatelessComponent<IRebalanceListProps> = (
   props: IRebalanceListProps
 ) => {
   return (
     <div>
+      <TextField
+        value={String(props.rebalanceCashCAD.toString())}
+        label={"CAD to Add:"}
+        onChanged={props.onChangedRebalanceCashCAD}
+      />
+      <TextField
+        value={String(props.rebalanceCashUSD)}
+        label={"USD to Add:"}
+        onChanged={props.onChangedRebalanceCashUSD}
+      />
       <DetailsList
         items={props.equities.map(e => {
           return {

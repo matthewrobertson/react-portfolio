@@ -10,6 +10,9 @@ import stockQuotesReducer, {
 } from "./reducers/StockQuotesReducer";
 import { loadState, persistState } from "./utils/localStorage";
 import cashHoldingReducer, { ICashHoldingsState } from "./reducers/CashReducer";
+import rebalanceCashReducer, {
+  IRebalanceCashState,
+} from "./reducers/RebalanceCashReducer";
 
 export interface IStoreState {
   addStock: IAddStockState;
@@ -17,6 +20,7 @@ export interface IStoreState {
   stockQuotes: IStockQuoteState;
   exchangeRate: IExchangeRateState;
   cash: ICashHoldingsState;
+  rebalanceCash: IRebalanceCashState;
 }
 
 const reducer = combineReducers({
@@ -25,6 +29,7 @@ const reducer = combineReducers({
   holdings: holdingsReducer,
   stockQuotes: stockQuotesReducer,
   cash: cashHoldingReducer,
+  rebalanceCash: rebalanceCashReducer,
 });
 
 const storedState = loadState();
