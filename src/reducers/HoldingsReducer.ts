@@ -39,7 +39,7 @@ function addHolding(
   const { ticker } = action;
   newState[ticker] = {
     count: action.quantity,
-    target: 0,
+    target: action.targetPercent,
   };
   return newState;
 }

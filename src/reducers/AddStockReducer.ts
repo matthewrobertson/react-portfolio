@@ -3,23 +3,25 @@ import {
   ADD_HOLDING,
   ADD_STOCK_CHANGE,
   ADD_CASH,
+  ADD_STOCK_ERROR,
+  FETCH_STOCK_QUOTE_ERROR,
 } from "../actions/actions";
 import { Currency } from "../constants/types";
 
 export interface IAddStockState {
   ticker: string;
   numShares: number;
-  currencyAmount: number;
   currency: Currency;
-  isValid: boolean;
+  errorMessage: string | null;
+  targetPercent: number;
 }
 
 const defaultState: IAddStockState = {
-  isValid: true,
+  errorMessage: null,
   ticker: "",
   numShares: 0,
-  currencyAmount: 0,
   currency: Currency.CAD,
+  targetPercent: 0,
 };
 
 export default function addStockReducer(
@@ -31,14 +33,19 @@ export default function addStockReducer(
       const newState = Object.assign({}, state);
       if (action.field === "numShares") {
         newState.numShares = parseInt(action.value, 10);
-      } else if (action.field === "currencyAmount") {
-        newState.currencyAmount = parseFloat(action.value);
+      } else if (action.field === "targetPercent") {
+        newState.targetPercent = parseFloat(action.value);
       } else {
         // @ts-ignore
         newState[action.field] = action.value;
       }
 
       return newState;
+    case ADD_STOCK_ERROR:
+    case FETCH_STOCK_QUOTE_ERROR:
+      const errorState = { ...state };
+      errorState.errorMessage = action.message;
+      return errorState;
     case ADD_HOLDING:
     case ADD_CASH:
       return defaultState;

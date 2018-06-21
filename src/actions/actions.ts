@@ -3,6 +3,7 @@ import { Currency, IStockQuote } from "../constants/types";
 import { IAddStockState } from "../reducers/AddStockReducer";
 
 export const ADD_STOCK_CHANGE = "ADD_STOCK_CHANGE";
+export const ADD_STOCK_ERROR = "ADD_STOCK_ERROR";
 export const ADD_HOLDING = "ADD_HOLDING";
 export const ADD_CASH = "ADD_CASH";
 export const FETCH_STOCK_QUOTE_START = "FETCH_STOCK_QUOTE_START";
@@ -36,15 +37,31 @@ export function addStockChange(
 }
 
 /**
+ * ADD+STOCK_ERROR
+ */
+
+export function addStockError(message: string) {
+  return {
+    type: ADD_STOCK_ERROR as typeof ADD_STOCK_ERROR,
+    message,
+  };
+}
+export type IAddStockErrorAction = ReturnType<typeof addStockError>;
+
+/**
  * ADD_HOLDING
  */
 
-export function addHolding(ticker: string, value: number, quantity: number) {
+export function addHolding(
+  ticker: string,
+  quantity: number,
+  targetPercent: number
+) {
   return {
     ticker,
     type: ADD_HOLDING as typeof ADD_HOLDING,
-    value,
     quantity,
+    targetPercent,
   };
 }
 export type IAddHoldingAction = ReturnType<typeof addHolding>;
@@ -91,22 +108,14 @@ export function fetchStockQuoteSuccess(
   };
 }
 
-export interface IFetchStockQuoteError extends Action {
-  error: string;
-  type: typeof FETCH_STOCK_QUOTE_ERROR;
-  ticker: string;
-}
-
-export function fetchStockQuoteError(
-  ticker: string,
-  error: string
-): IFetchStockQuoteError {
+export function fetchStockQuoteError(ticker: string, message: string) {
   return {
-    error,
+    message,
     ticker,
-    type: FETCH_STOCK_QUOTE_ERROR,
+    type: FETCH_STOCK_QUOTE_ERROR as typeof FETCH_STOCK_QUOTE_ERROR,
   };
 }
+type IFetchStockQuoteError = ReturnType<typeof fetchStockQuoteError>;
 
 /**
  * UPDATE_SHARE_COUNT
@@ -216,4 +225,5 @@ export type ActionType =
   | IFetchExchangeRateSuccess
   | IFetchExchangeRateStart
   | IUpdateStockCurrencyAction
-  | IUpdateTargetPercent;
+  | IUpdateTargetPercent
+  | IAddStockErrorAction;

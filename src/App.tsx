@@ -3,9 +3,9 @@ import { Provider } from "react-redux";
 import "./App.css";
 import AddStockForm from "./containers/AddStockContainer";
 // import Holdings from "./containers/HoldingsContainer";
-import { fetchExchangeRate } from "./fetchers/StockFetcher";
+import { fetchExchangeRate, refreshAllHoldings } from "./fetchers/StockFetcher";
 import { Pivot, PivotItem } from "office-ui-fabric-react/lib/Pivot";
-import store from "./store";
+import store, { IStoreState } from "./store";
 import { Modal } from "office-ui-fabric-react/lib/Modal";
 
 import logo from "./logo.svg";
@@ -13,6 +13,7 @@ import BalancesContainer from "./containers/BalancesContainer";
 import CashContainer from "./containers/CashContainer";
 import EquitiesContainer from "./containers/EquitiesContainer";
 import RebalanceContainer from "./containers/RebalanceContainer";
+import { DefaultButton } from "office-ui-fabric-react/lib/Button";
 
 class App extends React.Component<{}, { showModal: boolean }> {
   constructor(props: {}) {
@@ -23,7 +24,10 @@ class App extends React.Component<{}, { showModal: boolean }> {
   }
 
   public componentDidMount() {
-    fetchExchangeRate(store.dispatch.bind(store));
+    const dispatch = store.dispatch.bind(store);
+    fetchExchangeRate(dispatch);
+    const state = store.getState() as IStoreState;
+    refreshAllHoldings(dispatch, Object.keys(state.holdings));
   }
 
   public render() {
@@ -40,10 +44,21 @@ class App extends React.Component<{}, { showModal: boolean }> {
                 <BalancesContainer />
               </PivotItem>
               <PivotItem headerText="Positions">
-                <h2 className="ms-font-xxl">Equities</h2>
-                <button onClick={this.showModal}>Add</button>
+                <h2 className="ms-font-xl">
+                  Equities
+                  <DefaultButton
+                    iconProps={{ iconName: "Add" }}
+                    title="Add Equity"
+                    ariaLabel="Add Equity"
+                    onClick={this.showModal}
+                    style={{ float: "right" }}
+                  >
+                    Add
+                  </DefaultButton>
+                </h2>
+
                 <EquitiesContainer />
-                <h2 className="ms-font-xxl">Cash</h2>
+                <h2 className="ms-font-xl">Cash</h2>
                 <CashContainer />
               </PivotItem>
               <PivotItem headerText="Rebalance">
@@ -53,7 +68,6 @@ class App extends React.Component<{}, { showModal: boolean }> {
             <Modal
               isOpen={this.state.showModal}
               onDismiss={this.closeModal}
-              isBlocking={true}
               containerClassName="ms-modalExample-container"
             >
               <AddStockForm />

@@ -7,10 +7,33 @@ import AlphaURLBuilder from "./AlphaURLBuilder";
 export default function fetchStockQuote(
   dispatch: Dispatch<actions.ActionType>,
   ticker: string,
-  quantity: number
+  quantity: number,
+  currency: Currency,
+  targetPercent: number
 ): void {
+  refreshStock(dispatch, ticker)
+    .then(() => {
+      dispatch(actions.updateStockCurrency(ticker, currency));
+      dispatch(actions.addHolding(ticker, quantity, targetPercent));
+    })
+    .catch(error => {
+      dispatch(actions.fetchStockQuoteError(ticker, "Invalid Ticker"));
+    });
+}
+
+export function refreshAllHoldings(
+  dispatch: Dispatch<actions.ActionType>,
+  holdings: string[]
+): void {
+  holdings.map(ticker => refreshStock(dispatch, ticker));
+}
+
+function refreshStock(
+  dispatch: Dispatch<actions.ActionType>,
+  ticker: string
+): Promise<void> {
   const url = AlphaURLBuilder.getStockQuoteURL(ticker);
-  fetch(url)
+  return fetch(url)
     .then(r => r.json())
     .then(apiResp => {
       const ts = apiResp["Time Series (1min)"];
@@ -24,10 +47,6 @@ export default function fetchStockQuote(
         volume: parseInteger(raw["5. volume"]),
       };
       dispatch(actions.fetchStockQuoteSuccess(ticker, quote));
-      dispatch(actions.addHolding(ticker, quote.close, quantity));
-    })
-    .catch(error => {
-      dispatch(actions.fetchStockQuoteError(ticker, "Invalid Ticker"));
     });
 }
 

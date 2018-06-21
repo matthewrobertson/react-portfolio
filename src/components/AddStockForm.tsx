@@ -1,66 +1,65 @@
 import { DefaultButton } from "office-ui-fabric-react/lib/Button";
 import { Dropdown, IDropdownOption } from "office-ui-fabric-react/lib/Dropdown";
-import { Pivot, PivotItem } from "office-ui-fabric-react/lib/Pivot";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
 import * as React from "react";
 import { IAddStockState } from "../reducers/AddStockReducer";
 import { Currency } from "../constants/types";
+import {
+  MessageBar,
+  MessageBarType,
+} from "office-ui-fabric-react/lib/MessageBar";
+import "./AddStockForm.css";
 
 interface IAddStockFormProps extends IAddStockState {
-  onAddStock: (ticker: string, numShares: number) => any;
-  onAddCash: (currency: Currency, amount: number) => any;
+  onAddStock: (
+    ticker: string,
+    numShares: number,
+    currency: Currency,
+    targetPercent: number
+  ) => any;
   onFieldChange: (field: keyof IAddStockState, ticker: string) => any;
 }
 
 export default class AddStockForm extends React.Component<IAddStockFormProps> {
   public render(): JSX.Element {
     return (
-      <Pivot>
-        <PivotItem headerText="Add Stock">
-          <div>
-            <form>
-              <TextField
-                label="Symbol"
-                onChanged={this.onValueChanged("ticker")}
-                value={this.props.ticker}
-              />
-              <TextField
-                label={"Shares"}
-                onChanged={this.onValueChanged("numShares")}
-                value={this.props.numShares.toString()}
-              />
-              <DefaultButton
-                primary={true}
-                text="Add Stock"
-                onClick={this.onAddStockClick}
-              />
-            </form>
-          </div>
-        </PivotItem>
-        <PivotItem headerText="Add Cash">
-          <form>
-            <TextField
-              label={"Amount"}
-              onChanged={this.onValueChanged("currencyAmount")}
-              value={this.props.currencyAmount.toString()}
-            />
-            <Dropdown
-              label="Currency"
-              defaultSelectedKey="CAD"
-              options={[
-                { key: "CAD", text: "CAD", data: "CAD" },
-                { key: "USD", text: "USD", data: "USD" },
-              ]}
-              onChanged={this.onDropdownChanged}
-            />
+      <div className="AddStockForm-wrapper">
+        <div className="ms-fontSize-xl AddStockForm-header">Add Equity</div>
+        {this.getError()}
+        <form>
+          <TextField
+            label="Symbol"
+            onChanged={this.onValueChanged("ticker")}
+            value={this.props.ticker}
+          />
+          <TextField
+            label={"Shares"}
+            onChanged={this.onValueChanged("numShares")}
+            value={this.props.numShares.toString()}
+          />
+          <Dropdown
+            label="Currency"
+            defaultSelectedKey={this.props.currency}
+            options={[
+              { key: "CAD", text: "CAD", data: "CAD" },
+              { key: "USD", text: "USD", data: "USD" },
+            ]}
+            onChanged={this.onDropdownChanged}
+          />
+          <TextField
+            label={"Target Percent"}
+            onChanged={this.onValueChanged("targetPercent")}
+            value={this.props.targetPercent.toString()}
+          />
+          <div className="AddStockForm-buttonWrapper">
             <DefaultButton
               primary={true}
-              text="Add Cash"
-              onClick={this.onAddCashClick}
+              text="Add Stock"
+              onClick={this.onAddStockClick}
             />
-          </form>
-        </PivotItem>
-      </Pivot>
+          </div>
+        </form>
+      </div>
     );
   }
 
@@ -76,11 +75,22 @@ export default class AddStockForm extends React.Component<IAddStockFormProps> {
 
   private onAddStockClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    this.props.onAddStock(this.props.ticker, this.props.numShares);
+    this.props.onAddStock(
+      this.props.ticker,
+      this.props.numShares,
+      this.props.currency,
+      this.props.targetPercent
+    );
   };
 
-  private onAddCashClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    this.props.onAddCash(this.props.currency, this.props.currencyAmount);
-  };
+  private getError() {
+    if (this.props.errorMessage != null) {
+      return (
+        <MessageBar messageBarType={MessageBarType.error}>
+          {this.props.errorMessage}
+        </MessageBar>
+      );
+    }
+    return null;
+  }
 }

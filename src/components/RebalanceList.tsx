@@ -49,7 +49,7 @@ const RebalanceList: React.StatelessComponent<IRebalanceListProps> = (
             shareCount: e.shareCount,
             positionValue: formatCurrency(e.positionValue),
             percentPort: formatPercent(e.percentPort),
-            targetPercent: formatPercent(e.targetPercent),
+            targetPercent: formatPercent(e.targetPercent / 100),
             buySell: e.buySell,
           };
         })}

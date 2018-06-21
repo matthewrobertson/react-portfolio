@@ -12,10 +12,12 @@ export function mapStateToProps(state: IStoreState) {
 
 export function mapDispatchToProps(dispatch: Dispatch<actions.ActionType>) {
   return {
-    onAddStock: (ticker: string, quantity: number) =>
-      fetchStockQuote(dispatch, ticker, quantity),
-    onAddCash: (currency: Currency, amount: number) =>
-      dispatch(actions.addCash(currency, amount)),
+    onAddStock: (
+      ticker: string,
+      quantity: number,
+      currency: Currency,
+      targetPercent: number
+    ) => fetchStockQuote(dispatch, ticker, quantity, currency, targetPercent),
     onFieldChange: (field: keyof IAddStockState, value: string) =>
       dispatch(actions.addStockChange(field, value)),
   };
