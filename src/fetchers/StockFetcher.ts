@@ -10,14 +10,15 @@ export default function fetchStockQuote(
   quantity: number,
   currency: Currency,
   targetPercent: number
-): void {
-  refreshStock(dispatch, ticker)
+): Promise<void> {
+  return refreshStock(dispatch, ticker)
     .then(() => {
       dispatch(actions.updateStockCurrency(ticker, currency));
       dispatch(actions.addHolding(ticker, quantity, targetPercent));
     })
     .catch(error => {
       dispatch(actions.fetchStockQuoteError(ticker, "Invalid Ticker"));
+      throw error;
     });
 }
 
