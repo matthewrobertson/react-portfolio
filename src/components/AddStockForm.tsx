@@ -18,19 +18,23 @@ interface IAddStockFormProps extends IAddStockState {
     targetPercent: number
   ) => any;
   onFieldChange: (field: keyof IAddStockState, ticker: string) => any;
+  isEditing: boolean;
 }
 
 export default class AddStockForm extends React.Component<IAddStockFormProps> {
   public render(): JSX.Element {
     return (
       <div className="AddStockForm-wrapper">
-        <div className="ms-fontSize-xl AddStockForm-header">Add Equity</div>
+        <div className="ms-fontSize-xl AddStockForm-header">
+          {this.props.isEditing ? "Edit Holding" : "Add Equity"}
+        </div>
         {this.getError()}
         <form>
           <TextField
             label="Symbol"
             onChanged={this.onValueChanged("ticker")}
             value={this.props.ticker}
+            disabled={this.props.isEditing}
           />
           <TextField
             label={"Shares"}

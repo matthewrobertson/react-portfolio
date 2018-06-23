@@ -6,9 +6,19 @@ import { IStoreState } from "../store";
 import { IAddStockState } from "../reducers/AddStockReducer";
 import { Currency } from "../constants/types";
 
-export function mapStateToProps(state: IStoreState) {
-  return { ...state.addStock };
+interface IOwnProps {
+  editTicker?: string;
 }
+
+export function mapStateToProps(state: IStoreState, ownProps: IOwnProps) {
+  if (ownProps.editTicker) {
+    console.log(ownProps.editTicker);
+    return { ...state.addStock, ticker: ownProps.editTicker, isEditing: true };
+  } else {
+    return { ...state.addStock, isEditing: false };
+  }
+}
+type StateProps = ReturnType<typeof mapStateToProps>;
 
 export function mapDispatchToProps(dispatch: Dispatch<actions.ActionType>) {
   return {
@@ -22,8 +32,9 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.ActionType>) {
       dispatch(actions.addStockChange(field, value)),
   };
 }
+type DispatchProps = ReturnType<typeof mapDispatchToProps>;
 
-export default connect(
+export default connect<StateProps, DispatchProps, IOwnProps>(
   mapStateToProps,
   mapDispatchToProps
 )(AddStockForm);
