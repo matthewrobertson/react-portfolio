@@ -43,6 +43,7 @@ function removeHolding(
   delete newState[action.ticker];
   return newState;
 }
+
 function addHolding(
   state: IHoldingsState,
   action: IAddHoldingAction

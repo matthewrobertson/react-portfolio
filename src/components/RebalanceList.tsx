@@ -59,7 +59,7 @@ class RebalanceList extends React.Component<IRebalanceListProps> {
   public onTargetChanged = (ticker: string) => {
     return (val: string) => {
       const target = parseFloat(val);
-      if (target) {
+      if (target != null && !isNaN(target)) {
         this.props.onChangedTargetPercent(ticker, target);
       }
     };

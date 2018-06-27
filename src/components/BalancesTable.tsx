@@ -34,8 +34,8 @@ const getItem = (label: string, usd: number, cad: number) => {
   return {
     key: label,
     rowLabel: label,
-    cad: formatCurrency(usd),
-    usd: formatCurrency(cad),
+    cad: formatCurrency(cad),
+    usd: formatCurrency(usd),
   };
 };
 
