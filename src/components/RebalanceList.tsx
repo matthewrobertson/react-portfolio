@@ -57,12 +57,16 @@ const RebalanceList: React.StatelessComponent<IRebalanceListProps> = (
   return (
     <div>
       <TextField
-        value={String(props.rebalanceCashCAD.toString())}
+        value={String(
+          props.rebalanceCashCAD == null ? "" : props.rebalanceCashCAD
+        )}
         label={"CAD to Add:"}
         onChanged={props.onChangedRebalanceCashCAD}
       />
       <TextField
-        value={String(props.rebalanceCashUSD)}
+        value={String(
+          props.rebalanceCashUSD == null ? "" : props.rebalanceCashUSD
+        )}
         label={"USD to Add:"}
         onChanged={props.onChangedRebalanceCashUSD}
       />
