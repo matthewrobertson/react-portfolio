@@ -10,7 +10,7 @@ interface IOwnProps {
 }
 
 export function mapStateToProps(state: IStoreState, ownProps: IOwnProps) {
-  if (ownProps.editTicker) {
+  if (ownProps.editTicker && state.holdings[ownProps.editTicker]) {
     const holding = state.holdings[ownProps.editTicker];
     const equity = state.stockQuotes[ownProps.editTicker];
     return {
@@ -34,6 +34,9 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.ActionType>) {
       currency: Currency,
       targetPercent: number
     ) => fetchStockQuote(dispatch, ticker, quantity, currency, targetPercent),
+    onDeleteStock: (ticker: string) => {
+      dispatch(actions.removeHolding(ticker));
+    },
   };
 }
 type DispatchProps = ReturnType<typeof mapDispatchToProps>;

@@ -16,6 +16,7 @@ export const FETCH_EXCHANGE_RATE_SUCCESS = "FETCH_EXCHANGE_RATE_SUCCESS";
 export const FETCH_EXCHANGE_RATE_ERROR = "FETCH_EXCHANGE_RATE_ERROR";
 export const UPDATE_HOLDING_PERCENT = "UPDATE_HOLDING_PERCENT";
 export const UPDATE_REBALANCE_CASH = "UPDATE_REBALANCE_CASH";
+export const REMOVE_HOLDING = "REMOVE_HOLDING";
 
 /**
  * ADD_STOCK_CHANGE
@@ -66,6 +67,14 @@ export function addHolding(
   };
 }
 export type IAddHoldingAction = ReturnType<typeof addHolding>;
+
+export function removeHolding(ticker: string) {
+  return {
+    type: REMOVE_HOLDING as typeof REMOVE_HOLDING,
+    ticker,
+  };
+}
+export type IRemoveHolding = ReturnType<typeof removeHolding>;
 
 export function addCash(currency: Currency, amount: number) {
   return {
@@ -236,4 +245,5 @@ export type ActionType =
   | IUpdateStockCurrencyAction
   | IUpdateTargetPercent
   | IUpdateRebalanceCash
-  | IAddStockErrorAction;
+  | IAddStockErrorAction
+  | IRemoveHolding;

@@ -6,6 +6,8 @@ import {
   IUpdateTargetPercent,
   UPDATE_HOLDING_PERCENT,
   UPDATE_SHARE_COUNT,
+  REMOVE_HOLDING,
+  IRemoveHolding,
 } from "../actions/actions";
 
 interface IHolding {
@@ -27,10 +29,20 @@ export default function addStockReducer(
       return udpateShareCount(state, action);
     case UPDATE_HOLDING_PERCENT:
       return updateHoldingPercent(state, action);
+    case REMOVE_HOLDING:
+      return removeHolding(state, action);
   }
   return state;
 }
 
+function removeHolding(
+  state: IHoldingsState,
+  action: IRemoveHolding
+): IHoldingsState {
+  const newState = Object.assign({}, state);
+  delete newState[action.ticker];
+  return newState;
+}
 function addHolding(
   state: IHoldingsState,
   action: IAddHoldingAction

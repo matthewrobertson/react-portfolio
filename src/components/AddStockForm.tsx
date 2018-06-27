@@ -21,6 +21,7 @@ interface IAddStockFormProps {
     currency: Currency,
     targetPercent: number
   ) => Promise<any>;
+  onDeleteStock: (ticker: string) => any;
   isEditing: boolean;
   errorMessage?: string;
 }
@@ -90,15 +91,30 @@ export default class AddStockForm extends React.Component<
             value={this.state.targetPercent.toString()}
           />
           <div className="AddStockForm-buttonWrapper">
+            {this.renderDeleteButton()}
             <DefaultButton
               primary={true}
-              text="Add Stock"
+              text={this.props.isEditing ? "Save" : "Add Stock"}
               onClick={this.onAddStockClick}
               disabled={this.state.isLoading}
             />
           </div>
         </form>
       </div>
+    );
+  }
+
+  private renderDeleteButton() {
+    if (!this.props.isEditing) {
+      return null;
+    }
+    return (
+      <DefaultButton
+        primary={false}
+        text="Delete"
+        onClick={this.onDeleteClick}
+        disabled={this.state.isLoading}
+      />
     );
   }
 
@@ -131,6 +147,12 @@ export default class AddStockForm extends React.Component<
       .catch(() => {
         this.setState({ errorMessage: "Invalid Ticker" });
       });
+  };
+
+  private onDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    this.setState({ redirect: true });
+    this.props.onDeleteStock(this.state.ticker);
   };
 
   private getError() {
