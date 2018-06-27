@@ -13,6 +13,7 @@ interface IRebalanceListProps {
   equities: IRebalanceListItem[];
   onChangedRebalanceCashUSD: (amount: string) => any;
   onChangedRebalanceCashCAD: (amount: string) => any;
+  onChangedTargetPercent: (ticker: string, target: number) => any;
 }
 
 export interface IRebalanceListItem {
@@ -42,50 +43,72 @@ const getColumn = (x: string): IColumn => {
   };
 };
 
-/*
-const validateNumberInput = (value: string): string => {
-  if (value.trim().length === 0 || isNaN(+value)) {
-    return "0";
-  }
-  return value;
+const getItem = (e: IRebalanceListItem) => {
+  return {
+    stock: e.stock,
+    shareCount: e.shareCount,
+    positionValue: formatCurrency(e.positionValue),
+    percentPort: formatPercent(e.percentPort),
+    targetPercent: e.targetPercent,
+    buySell: e.buySell,
+  };
 };
-*/
+type IRowItem = ReturnType<typeof getItem>;
 
-const RebalanceList: React.StatelessComponent<IRebalanceListProps> = (
-  props: IRebalanceListProps
-) => {
-  return (
-    <div>
-      <TextField
-        value={String(
-          props.rebalanceCashCAD == null ? "" : props.rebalanceCashCAD
-        )}
-        label={"CAD to Add:"}
-        onChanged={props.onChangedRebalanceCashCAD}
-      />
-      <TextField
-        value={String(
-          props.rebalanceCashUSD == null ? "" : props.rebalanceCashUSD
-        )}
-        label={"USD to Add:"}
-        onChanged={props.onChangedRebalanceCashUSD}
-      />
-      <DetailsList
-        items={props.equities.map(e => {
-          return {
-            stock: e.stock,
-            shareCount: e.shareCount,
-            positionValue: formatCurrency(e.positionValue),
-            percentPort: formatPercent(e.percentPort),
-            targetPercent: formatPercent(e.targetPercent / 100),
-            buySell: e.buySell,
-          };
-        })}
-        columns={Object.keys(columns).map(getColumn)}
-        selectionMode={SelectionMode.none}
-      />
-    </div>
-  );
-};
+class RebalanceList extends React.Component<IRebalanceListProps> {
+  public onTargetChanged = (ticker: string) => {
+    return (val: string) => {
+      const target = parseFloat(val);
+      if (target) {
+        this.props.onChangedTargetPercent(ticker, target);
+      }
+    };
+  };
+
+  public renderColumn = (item: IRowItem, index: number, column: IColumn) => {
+    const fieldContent = item[column.fieldName || ""];
+
+    if (column.key === "targetPercent") {
+      return (
+        <TextField
+          value={fieldContent}
+          onChanged={this.onTargetChanged(item.stock)}
+        />
+      );
+    }
+    return <span>{fieldContent}</span>;
+  };
+
+  public render() {
+    return (
+      <div>
+        <TextField
+          value={String(
+            this.props.rebalanceCashCAD == null
+              ? ""
+              : this.props.rebalanceCashCAD
+          )}
+          label={"CAD to Add:"}
+          onChanged={this.props.onChangedRebalanceCashCAD}
+        />
+        <TextField
+          value={String(
+            this.props.rebalanceCashUSD == null
+              ? ""
+              : this.props.rebalanceCashUSD
+          )}
+          label={"USD to Add:"}
+          onChanged={this.props.onChangedRebalanceCashUSD}
+        />
+        <DetailsList
+          items={this.props.equities.map(getItem)}
+          columns={Object.keys(columns).map(getColumn)}
+          selectionMode={SelectionMode.none}
+          onRenderItemColumn={this.renderColumn}
+        />
+      </div>
+    );
+  }
+}
 
 export default RebalanceList;

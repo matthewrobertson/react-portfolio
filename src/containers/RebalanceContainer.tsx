@@ -60,6 +60,9 @@ export function mapDispatchToProps(dispatch: Dispatch<actions.ActionType>) {
       dispatch(actions.updateRebalanceCash(Currency.CAD, amount)),
     onChangedRebalanceCashUSD: (amount: string) =>
       dispatch(actions.updateRebalanceCash(Currency.USD, amount)),
+    onChangedTargetPercent: (ticker: string, target: number) => {
+      dispatch(actions.updateTargetPercent(ticker, target));
+    },
   };
 }
 
