@@ -1,8 +1,9 @@
 import { Dispatch } from "react-redux";
 import * as actions from "../actions/actions";
 import { Currency } from "../constants/types";
-import { parseInteger } from "../utils/Utils";
+import { parseInteger, updatedToday } from "../utils/Utils";
 import AlphaURLBuilder from "./AlphaURLBuilder";
+import { IStoreState } from "../store";
 
 export default function fetchStockQuote(
   dispatch: Dispatch<actions.ActionType>,
@@ -24,9 +25,17 @@ export default function fetchStockQuote(
 
 export function refreshAllHoldings(
   dispatch: Dispatch<actions.ActionType>,
-  holdings: string[]
+  state: IStoreState
 ): void {
-  holdings.map(ticker => refreshStock(dispatch, ticker));
+  if (!updatedToday(state.exchangeRate.updatedAt)) {
+    fetchExchangeRate(dispatch);
+  }
+  const holdings = Object.keys(state.holdings);
+  holdings.map(ticker => {
+    if (!updatedToday(state.stockQuotes[ticker].updatedAt)) {
+      refreshStock(dispatch, ticker);
+    }
+  });
 }
 
 function refreshStock(
@@ -46,6 +55,7 @@ function refreshStock(
         open: parseFloat(raw["1. open"]),
         ticker,
         volume: parseInteger(raw["5. volume"]),
+        updatedAt: Date.now(),
       };
       dispatch(actions.fetchStockQuoteSuccess(ticker, quote));
     });

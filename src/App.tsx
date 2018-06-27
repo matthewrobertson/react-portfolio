@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Provider } from "react-redux";
 import "./App.css";
-import { fetchExchangeRate, refreshAllHoldings } from "./fetchers/StockFetcher";
+import { refreshAllHoldings } from "./fetchers/StockFetcher";
 import { Pivot, PivotItem } from "office-ui-fabric-react/lib/Pivot";
 import store, { IStoreState } from "./store";
 import { BrowserRouter as Router, Route } from "react-router-dom";
@@ -18,9 +18,8 @@ class App extends React.Component<{}, {}> {
 
   public componentDidMount() {
     const dispatch = store.dispatch.bind(store);
-    fetchExchangeRate(dispatch);
     const state = store.getState() as IStoreState;
-    refreshAllHoldings(dispatch, Object.keys(state.holdings));
+    refreshAllHoldings(dispatch, state);
   }
 
   public render() {
