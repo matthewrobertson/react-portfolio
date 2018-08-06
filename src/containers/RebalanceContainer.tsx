@@ -22,8 +22,9 @@ const initializeHolding = (
   const positionValue =
     currency === Currency.USD ? totalValue : totalValue / exchangeRate;
   const percentPort = netWorth > 0 ? positionValue / netWorth : 0.0;
+  const buyPrice = currency === Currency.USD ? price : price / exchangeRate;
   const buySell = Math.floor(
-    (netWorth * targetPercent) / price / 100 - shareCount
+    (netWorth * targetPercent) / buyPrice / 100 - shareCount
   );
 
   return {
