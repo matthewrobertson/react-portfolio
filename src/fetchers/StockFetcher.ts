@@ -53,18 +53,20 @@ function refreshTSXStock(
   return fetch(url)
     .then(r => r.json())
     .then(apiResp => {
-      const ts = apiResp["Time Series (Daily)"];
-      const fk = Object.keys(ts)[0];
-      const raw = ts[fk];
-      const quote = {
-        close: parseFloat(raw["4. close"]),
-        currency: Currency.USD,
-        open: parseFloat(raw["1. open"]),
-        ticker,
-        volume: parseInteger(raw["5. volume"]),
-        updatedAt: Date.now(),
-      };
-      dispatch(actions.fetchStockQuoteSuccess(ticker, quote));
+      if (apiResp != null) {
+        const ts = apiResp["Time Series (Daily)"];
+        const fk = Object.keys(ts)[0];
+        const raw = ts[fk];
+        const quote = {
+          close: parseFloat(raw["4. close"]),
+          currency: Currency.USD,
+          open: parseFloat(raw["1. open"]),
+          ticker,
+          volume: parseInteger(raw["5. volume"]),
+          updatedAt: Date.now(),
+        };
+        dispatch(actions.fetchStockQuoteSuccess(ticker, quote));
+      }
     });
 }
 

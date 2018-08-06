@@ -56,7 +56,7 @@ type IRowItem = ReturnType<typeof getRow>;
 const renderColumn = (item: IRowItem, index: number, column: IColumn) => {
   const fieldContent = item[column.fieldName || ""];
   if (column.key === "actions") {
-    const url = `edit_holding/${item.stock}`;
+    const url = `/edit_holding/${item.stock}`;
     return <Link to={url}>Edit</Link>;
   }
   return <span>{fieldContent}</span>;
