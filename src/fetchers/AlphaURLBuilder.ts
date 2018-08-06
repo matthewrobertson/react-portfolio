@@ -16,6 +16,12 @@ class AlphaURLBuilder {
         });
     }
 
+    public static getTSXQuoteURL(ticker: string): string {
+        return (new AlphaURLBuilder()).getBaseURL('TIME_SERIES_DAILY', {
+            symbol: 'TSX:' + ticker,
+        });
+    }
+
     constructor(
         private domain: string = 'www.alphavantage.co',
         private apiKey: string = API_KEY,

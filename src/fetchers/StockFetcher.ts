@@ -12,7 +12,13 @@ export default function fetchStockQuote(
   currency: Currency,
   targetPercent: number
 ): Promise<void> {
-  return refreshStock(dispatch, ticker)
+  let promise;
+  if (currency  === Currency.CAD) {
+    promise = refreshTSXStock(dispatch, ticker);
+  } else {
+    promise = refreshStock(dispatch, ticker);
+  }
+  return promise
     .then(() => {
       dispatch(actions.updateStockCurrency(ticker, currency));
       dispatch(actions.addHolding(ticker, quantity, targetPercent));
@@ -36,6 +42,30 @@ export function refreshAllHoldings(
       refreshStock(dispatch, ticker);
     }
   });
+}
+
+
+function refreshTSXStock(
+  dispatch: Dispatch<actions.ActionType>,
+  ticker: string
+): Promise<void> {
+  const url = AlphaURLBuilder.getTSXQuoteURL(ticker);
+  return fetch(url)
+    .then(r => r.json())
+    .then(apiResp => {
+      const ts = apiResp["Time Series (Daily)"];
+      const fk = Object.keys(ts)[0];
+      const raw = ts[fk];
+      const quote = {
+        close: parseFloat(raw["4. close"]),
+        currency: Currency.USD,
+        open: parseFloat(raw["1. open"]),
+        ticker,
+        volume: parseInteger(raw["5. volume"]),
+        updatedAt: Date.now(),
+      };
+      dispatch(actions.fetchStockQuoteSuccess(ticker, quote));
+    });
 }
 
 function refreshStock(
